@@ -265,6 +265,173 @@ button:disabled{cursor:not-allowed;opacity:.55}
 .judge{display:grid;grid-template-columns:1fr 1fr;gap:8px}.judge .btn{font-size:17px;padding:12px 8px}
 .fixq{margin:4px 0 8px;font-size:18px}
 @keyframes glow{0%,100%{box-shadow:0 0 0 0 transparent}50%{box-shadow:0 0 0 4px color-mix(in srgb,var(--lilac) 30%,transparent)}}
+/* ===== Kid-friendly theme ===== */
+:root{--candy-y:#FFD84D;--candy-g:#5BD08A;--candy-p:#A78BFA;--candy-o:#FF9F6E;--candy-t:#4FD1C5;--candy-b:#60A5FA;--candy-r:#FF7A85;--fixed-ink:#1D2B4F}
+body{
+  background-color:var(--bg);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='none' stroke='%237C6CF2' stroke-width='4' stroke-linecap='round' opacity='.13'%3E%3Cpath d='M22 30h20M32 20v20'/%3E%3Cpath d='M120 22l14 14M134 22l-14 14'/%3E%3Cpath d='M70 96h22'/%3E%3Ccircle cx='81' cy='88' r='1.5'/%3E%3Ccircle cx='81' cy='104' r='1.5'/%3E%3Cpath d='M140 120h20M140 128h20'/%3E%3Cpath d='M28 140h18'/%3E%3C/g%3E%3Cg fill='%23FFC83D' opacity='.28'%3E%3Cpath d='M150 70l4 9 10 1-7 7 2 10-9-5-9 5 2-10-7-7 10-1z'/%3E%3Ccircle cx='60' cy='160' r='5'/%3E%3C/g%3E%3Cg fill='%2334B27B' opacity='.18'%3E%3Ccircle cx='100' cy='40' r='6'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:180px 180px;
+}
+/* Rainbow title */
+.brand{font-size:32px;letter-spacing:0;text-shadow:0 3px 0 rgba(0,0,0,.08)}
+.brand span{display:inline-block;animation:bob 3s ease-in-out infinite}
+.brand span:nth-child(odd){animation-delay:.4s}
+.brand .sp{width:.3em}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+/* Chunky candy buttons */
+.btn{border-radius:18px;box-shadow:0 5px 0 rgba(0,0,0,.22);transition:transform .08s,box-shadow .08s}
+.btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.22)}
+.btn.ghost{background:var(--paper);box-shadow:0 5px 0 var(--line)}
+.btn.ghost:active:not(:disabled){box-shadow:0 1px 0 var(--line)}
+.btn:not(.ghost){background:var(--lilac);color:#fff}
+.stat{font-size:18px;padding:4px 14px;box-shadow:0 3px 0 var(--line)}
+/* Cards */
+.pet-card,.problem,.gcard,.tutor,.modal-card{border-width:3px;border-radius:30px;box-shadow:0 6px 0 var(--line)}
+.pet-card{background:linear-gradient(160deg,var(--paper) 55%,color-mix(in srgb,var(--sun) 22%,var(--paper)))}
+.pet:not([class*="bg-"]){background:radial-gradient(circle at 50% 62%,color-mix(in srgb,var(--sun) 35%,transparent) 0 46%,transparent 47%)}
+.pet-info h1{font-size:44px;color:var(--lilac)}
+.xpbar{height:16px;border:2px solid var(--line);background:var(--well)}
+.xpbar span{background:linear-gradient(90deg,var(--leaf),#8BE38F)}
+/* Section titles */
+.section-title{font-size:23px;display:flex;align-items:center;gap:6px}
+/* Grade chips in candy colors */
+.chip{border-width:3px;box-shadow:0 4px 0 var(--line);font-size:20px;min-width:56px;transition:transform .1s}
+.chip:nth-child(3n+1){border-color:color-mix(in srgb,var(--candy-r) 55%,var(--line))}
+.chip:nth-child(3n+2){border-color:color-mix(in srgb,var(--candy-b) 55%,var(--line))}
+.chip:nth-child(3n){border-color:color-mix(in srgb,var(--candy-g) 55%,var(--line))}
+.chip[aria-pressed="true"]{transform:translateY(-3px) scale(1.06);box-shadow:0 6px 0 #E0A800}
+/* Mode tiles: each mode its own color */
+.mode{border-width:3px;border-bottom-width:8px;color:var(--fixed-ink);transition:transform .08s}
+.mode small{color:#44506E}
+.mode:active{transform:translateY(4px);border-bottom-width:4px}
+.mode .ic{width:62px;height:62px;border-radius:20px;font-size:32px;box-shadow:inset 0 -4px 0 rgba(0,0,0,.12);transition:transform .2s}
+.mode:hover .ic{transform:rotate(-8deg) scale(1.08)}
+.mode[data-mode="audio"]{background:#ECE6FF;border-color:#9B87F5}
+.mode[data-mode="word"]{background:#FFE7DB;border-color:#FF9466}
+.mode[data-mode="teach"]{background:#D9F7F2;border-color:#3FC4B5}
+.mode#testBtn{background:#DFEEFF;border-color:#5C9BF0}
+.mode[data-mode="review"]{background:#FFE1E4;border-color:#FF7A85}
+.daily{border-radius:28px;box-shadow:0 6px 0 #C9601A;border-bottom:0}
+.daily .ic{animation:bob 2.4s ease-in-out infinite}
+.util .btn{border-width:3px;font-weight:800}
+.util .btn span{font-size:28px}
+/* Pet picker */
+.petpick{border-width:3px;box-shadow:0 5px 0 var(--line);transition:transform .1s}
+.petpick[aria-pressed="true"]{transform:translateY(-3px);background:color-mix(in srgb,var(--lilac) 14%,var(--paper))}
+/* Play screen */
+.track{border-width:3px}
+.dot{width:18px;height:18px;border:2px solid rgba(0,0,0,.08)}
+.problem{background-color:var(--paper);background-image:linear-gradient(color-mix(in srgb,var(--lilac) 9%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--lilac) 9%,transparent) 1px,transparent 1px);background-size:24px 24px}
+.box{border-width:3px;border-radius:16px;background:var(--paper)}
+.box.active{border-width:3px}
+.streak{font-size:28px;color:var(--candy-o);text-shadow:0 2px 0 rgba(0,0,0,.08)}
+.wp-q{font-size:21px}
+.wp-q.big{font-family:"Patrick Hand",cursive;font-size:clamp(40px,12vw,56px);text-align:center;font-weight:400;line-height:1.1;margin:6px 0}
+.wp-tag{font-size:15px;padding:3px 14px;box-shadow:0 3px 0 rgba(0,0,0,.1)}
+.choice{border-width:3px;border-bottom-width:6px;border-radius:20px;background:var(--paper);font-size:20px;transition:transform .08s}
+.choice:active:not(:disabled){transform:translateY(3px);border-bottom-width:3px}
+.choice .letter{width:36px;height:36px;font-size:17px;font-weight:800;color:#fff;border:0}
+.choice:not(.right):not(.wrong):not(.sel):nth-child(1) .letter{background:var(--candy-r)}
+.choice:not(.right):not(.wrong):not(.sel):nth-child(2) .letter{background:var(--candy-b)}
+.choice:not(.right):not(.wrong):not(.sel):nth-child(3) .letter{background:var(--candy-g)}
+.choice:not(.right):not(.wrong):not(.sel):nth-child(4) .letter{background:var(--candy-p)}
+.choice:not(.right):not(.wrong):not(.sel):nth-child(5) .letter{background:var(--candy-o)}
+.keypad button{border-width:3px;border-bottom-width:7px;border-radius:20px;font-size:30px;background:var(--paper)}
+.keypad button:nth-child(3n+1){color:#E5484D}.keypad button:nth-child(3n+2){color:#2F7BE5}.keypad button:nth-child(3n){color:#1F9D57}
+.tutor{border-color:var(--sun);background:color-mix(in srgb,var(--sun) 12%,var(--paper))}
+.bubble{border-width:3px;border-radius:20px;background:var(--paper)}
+.stars{font-size:56px;text-shadow:0 4px 0 rgba(0,0,0,.08)}
+.results h1{font-size:40px;color:var(--lilac)}
+/* Confetti */
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:85;overflow:hidden}
+.confetti i{position:absolute;top:-16px;left:var(--x);width:10px;height:14px;background:var(--c);border-radius:3px;transform:rotate(var(--r));animation:fall var(--d) cubic-bezier(.25,.6,.5,1) var(--w) forwards}
+.confetti i:nth-child(3n){border-radius:50%;width:11px;height:11px}
+@keyframes fall{to{transform:translate(var(--sx),105vh) rotate(calc(var(--r) + 600deg))}}
+/* Dark mode: keep the bright tiles readable */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mode small{color:#44506E}}
+.mode#divBtn{background:#FFE3F3;border-color:#F06AB5}
+.dcard h2{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.gtag{font-size:12px;font-weight:800;background:var(--line);color:var(--ink);border-radius:99px;padding:1px 8px}
+.dbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.lesson{margin-top:12px;align-items:stretch;gap:12px}
+.lesson-q{font-family:"Patrick Hand",cursive;font-size:clamp(34px,10vw,48px);text-align:center;line-height:1.15}
+.lsteps .pstep{cursor:default}
+.pstep.new{animation:pop .35s ease-out;border-color:var(--lilac)}
+.mode#fluBtn{background:#FFF3C4;border-color:#F2B705}
+.fsum{margin-top:12px}.fsum>div:first-child{font-size:18px;margin-bottom:6px}
+.fgo{width:100%;margin-top:12px}
+.fwrap{padding:8px;overflow-x:auto}
+.fgrid{display:grid;grid-template-columns:repeat(var(--cols),minmax(20px,1fr));gap:3px;min-width:min(100%,300px)}
+.fh{font-weight:800;font-size:13px;display:grid;place-items:center;aspect-ratio:1;color:var(--muted)}
+.fh.corner{color:var(--lilac);font-size:16px}
+.rowh{background:var(--well);border:2px solid var(--line);border-radius:8px;color:var(--ink);padding:0;font-size:13px}
+.fc{aspect-ratio:1;border-radius:6px;border:0;padding:0;background:var(--line)}
+.fc.weak{background:#FF7A85}.fc.learn{background:#FFD84D}.fc.almost{background:#A6E3A1}.fc.master{background:#2FB36B}
+.flegend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:14px;color:var(--muted)}
+.flegend span{display:flex;align-items:center;gap:6px}.flegend i{display:inline-block;width:16px;height:16px;aspect-ratio:auto}
+.flu-card{min-height:230px;margin-top:12px;gap:14px}
+.flu-fact{font-family:"Patrick Hand",cursive;font-size:clamp(52px,16vw,76px);line-height:1;text-align:center;white-space:nowrap}
+.flu-ans{display:inline-block;min-width:1.4em;border-bottom:5px solid var(--lilac);color:var(--lilac)}
+.flu-ans.ok{color:var(--leaf);border-color:var(--leaf);animation:pop .3s}
+.flu-ans.fix{color:var(--leaf);border-color:var(--miss)}
+.flu-timer{width:80%;height:12px;border-radius:99px;background:var(--line);overflow:hidden}
+.flu-timer span{display:block;height:100%;width:100%;background:linear-gradient(90deg,#2FB36B,#FFD84D);border-radius:99px}
+.flu-timer span.late{background:var(--muted);width:0!important}
+.flu-tip{min-height:48px;text-align:center;font-weight:700;font-size:17px;padding:0 6px;line-height:1.35}
+.flu-tip.good{color:var(--leaf)}.flu-tip.bad{color:var(--ink)}
+.flu-keys{margin-top:12px}.flu-keys button{height:64px;font-size:32px}
+/* ===== 3D layer ===== */
+.bg3d{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;perspective:600px}
+.bg3d i{position:absolute;border-radius:50%;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.95) 0 7%,var(--c) 40%,color-mix(in srgb,var(--c) 55%,#000) 100%);opacity:.32;box-shadow:0 18px 30px -12px color-mix(in srgb,var(--c) 70%,transparent);animation:float3d var(--t) ease-in-out infinite alternate}
+.bg3d b{position:absolute;font:800 46px/1 "Baloo 2",system-ui,sans-serif;color:var(--c);opacity:.28;text-shadow:0 2px 0 color-mix(in srgb,var(--c) 60%,#000),0 4px 0 color-mix(in srgb,var(--c) 45%,#000);animation:spin3d var(--t) linear infinite}
+@keyframes float3d{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(var(--dx),var(--dy),0) scale(1.18)}}
+@keyframes spin3d{from{transform:rotateY(0) rotateX(15deg)}to{transform:rotateY(360deg) rotateX(15deg)}}
+/* Screens flip into place */
+#app>*{animation:enter3d .42s cubic-bezier(.2,.9,.3,1.2) backwards;transform-origin:50% 0}
+#app>*:nth-child(2){animation-delay:.04s}#app>*:nth-child(3){animation-delay:.08s}#app>*:nth-child(4){animation-delay:.12s}#app>*:nth-child(5){animation-delay:.16s}#app>*:nth-child(n+6){animation-delay:.2s}
+.modes>*{animation:enter3d .45s cubic-bezier(.2,.9,.3,1.2) backwards}
+.modes>*:nth-child(1){animation-delay:.12s}.modes>*:nth-child(2){animation-delay:.18s}.modes>*:nth-child(3){animation-delay:.24s}.modes>*:nth-child(4){animation-delay:.3s}.modes>*:nth-child(5){animation-delay:.36s}.modes>*:nth-child(n+6){animation-delay:.42s}
+@keyframes enter3d{from{opacity:0;transform:perspective(900px) rotateX(-28deg) translateY(18px)}to{opacity:1;transform:none}}
+/* Tilting 3D cards with a sweeping shine */
+.mode,.pet-card,.daily,.petpick,.shop-item{--rx:0deg;--ry:0deg;--ty:0px;transform:perspective(800px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(var(--ty));transform-style:preserve-3d;transition:transform .18s ease-out,box-shadow .2s}
+.mode,.daily{position:relative;overflow:hidden;box-shadow:0 14px 22px -12px rgba(0,0,0,.35)}
+.mode::after,.daily::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.6) 48%,transparent 62%);transform:translateX(-130%);pointer-events:none}
+.mode:hover::after{transform:translateX(130%);transition:transform .8s}
+.daily::after{animation:shine 4.5s ease-in-out infinite}
+@keyframes shine{0%,70%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
+.mode:hover,.daily:hover:not(:disabled),.petpick:hover,.shop-item:hover{--ty:-4px}
+.mode:active,.daily:active:not(:disabled){--ty:3px;--rx:8deg}
+.mode .ic{animation:bob 3.2s ease-in-out infinite;box-shadow:inset 0 -5px 0 rgba(0,0,0,.15),0 8px 14px -6px rgba(0,0,0,.35)}
+.modes>*:nth-child(even) .ic{animation-delay:.8s}
+.mode:hover .ic{transform:rotate(-10deg) scale(1.12)}
+/* Pet: breathing + depth */
+.pet svg,.mini svg,.petpick svg,.pw-face svg{animation:breathe 3.4s ease-in-out infinite;transform-origin:50% 92%}
+@keyframes breathe{0%,100%{transform:scale(1,1)}50%{transform:scale(1.035,.965)}}
+.pet-card{box-shadow:0 8px 0 var(--line),0 22px 30px -16px rgba(0,0,0,.35)}
+.pet-card .pet{transform:translateZ(40px)}
+/* Spinning coin */
+.coin3d{display:inline-block;animation:coinspin 2.8s linear infinite}
+@keyframes coinspin{0%{transform:rotateY(0)}100%{transform:rotateY(360deg)}}
+/* Deeper 3D buttons */
+.btn:not(.ghost){box-shadow:0 6px 0 #5B4ED0,0 14px 20px -8px rgba(124,108,242,.65)}
+.btn:not(.ghost):active:not(:disabled){box-shadow:0 1px 0 #5B4ED0,0 4px 8px -4px rgba(124,108,242,.5)}
+.btn.ghost{box-shadow:0 6px 0 var(--line),0 12px 18px -10px rgba(0,0,0,.25)}
+.chip,.keypad button,.choice,.stat,.petpick{box-shadow:0 5px 0 var(--line),0 10px 16px -10px rgba(0,0,0,.25)}
+.keypad button:active,.choice:active:not(:disabled){box-shadow:0 1px 0 var(--line)}
+.choice:hover:not(:disabled){transform:translateY(-2px)}
+/* Correct-answer 3D flip, new fact flip-in */
+.choice.right{animation:flip3d .7s ease}
+@keyframes flip3d{0%{transform:perspective(600px) rotateX(0)}45%{transform:perspective(600px) rotateX(-28deg) scale(1.04)}100%{transform:perspective(600px) rotateX(0)}}
+.flip-in{animation:flipin .4s cubic-bezier(.2,1.2,.4,1)}
+@keyframes flipin{from{opacity:0;transform:perspective(600px) rotateX(-85deg)}to{opacity:1;transform:none}}
+.problem{box-shadow:0 8px 0 var(--line),0 24px 30px -18px rgba(0,0,0,.3)}
+/* Title with 3D extrusion */
+.brand span{text-shadow:0 1px 0 rgba(0,0,0,.18),0 2px 0 rgba(0,0,0,.15),0 3px 0 rgba(0,0,0,.12),0 6px 8px rgba(0,0,0,.18)}
+/* Pop-ups and stars */
+.modal-card{animation:modal3d .5s cubic-bezier(.2,1.4,.4,1)}
+@keyframes modal3d{from{opacity:0;transform:perspective(900px) rotateX(-45deg) scale(.7)}to{opacity:1;transform:none}}
+.stars{display:inline-block;animation:spinin .9s cubic-bezier(.2,1.2,.4,1)}
+@keyframes spinin{from{opacity:0;transform:perspective(600px) rotateY(-180deg) scale(.4)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media (max-width:380px){.pet-card{grid-template-columns:110px 1fr}.pet-info h1{font-size:32px}}
 </style>
@@ -310,9 +477,9 @@ function logTime(ms){if(!(ms>0))return;S.practiceMs+=ms;const d=dkey();S.dayLog[
 function rec(topic,ok){const s=S.stats[topic]||(S.stats[topic]=[0,0]);s[1]++;if(ok)s[0]++;save()}
 const arithKey=p=>'arith:'+p.type, stratKey=p=>'strat:'+p.st;
 const ARITH_NAMES={add:'Addition',sub:'Subtraction',mul:'Multiplication',div:'Division',sq:'Squares'};
-const topicLabel=k=>{const[a,b]=k.split(':');return a==='teach'?'🧑‍🏫 Finding mistakes: '+(TEACH_SKILLS[b]||b):a==='arith'?'🔢 '+(ARITH_NAMES[b]||b):(STRAT[b]?`${STRAT[b].icon} ${STRAT[b].name}`:b)};
+const topicLabel=k=>{const[a,b]=k.split(':');return a==='flu'?'⚡ Fact fluency: '+(FLU_OPS[b]?FLU_OPS[b].name:b):a==='teach'?'🧑‍🏫 Finding mistakes: '+(TEACH_SKILLS[b]||b):a==='arith'?'🔢 '+(ARITH_NAMES[b]||b):(STRAT[b]?`${STRAT[b].icon} ${STRAT[b].name}`:DIV[b]?`➗ Division trick: ${DIV[b].name}`:b)};
 function mistakeKey(p){return p.kind==='word'||p.q?'w|'+p.q+'|'+p.ch.join('/'):'a|'+p.type+'|'+p.a+'|'+p.b}
-function addMistake(p){const m=p.q?{kind:'word',id:p.id,band:p.band,pts:p.pts,st:p.st,q:p.q,ch:p.ch,a:p.a,hint:p.hint,sol:p.sol,fig:p.fig,figSVG:p.figSVG}
+function addMistake(p){const m=p.q?{kind:'word',id:p.id,band:p.band,pts:p.pts,st:p.st,tag:p.tag,q:p.q,ch:p.ch,a:p.a,hint:p.hint,sol:p.sol,fig:p.fig,figSVG:p.figSVG}
     :{kind:'arith',type:p.type,a:p.a,b:p.b,answer:p.answer,layout:p.layout,dir:p.dir};
   const k=mistakeKey(m);if(S.mistakes.some(x=>mistakeKey(x)===k))return;S.mistakes.push(m);if(S.mistakes.length>40)S.mistakes.shift();save()}
 function removeMistake(p){const k=mistakeKey(p);S.mistakes=S.mistakes.filter(x=>mistakeKey(x)!==k);save()}
@@ -886,7 +1053,7 @@ const GEN=[
 
 const WP_BAND=g=>g<=1?0:g<=3?1:g<=5?2:3;
 const BAND_LABEL=['grades K–1','grades 2–3','grades 4–5','grades 6–8'];
-const stratLine=p=>`<p class="strat"><strong>${STRAT[p.st].icon} Strategy: ${STRAT[p.st].name}.</strong> ${STRAT[p.st].tip}</p>`;
+const stratLine=p=>{const t=STRAT[p.st]||DIV[p.st];return t?`<p class="strat"><strong>${t.icon} ${STRAT[p.st]?'Strategy':'Trick'}: ${t.name}.</strong> ${t.tip}</p>`:''};
 function pickWord(){
   const band=WP_BAND(eg()),pool=WP.filter(p=>p.band===band);
   if(!Array.isArray(S.seen))S.seen=[];
@@ -898,11 +1065,11 @@ function pickWord(){
   return Object.assign({id:t.id,band},t.make());
 }
 function renderWord(p=pickWord()){
-  G.p=p;boxes=[];
+  G.p=p;boxes=[];G.qStart=Date.now();
   const host=$('#problem');
   host.innerHTML=`<div class="wp">
-    <span class="wp-tag">${p.band<3?`⭐ Elementary contest style, ${p.pts} points`:'🏆 Middle school contest style'}</span>
-    <p class="wp-q">${p.q}</p>
+    <span class="wp-tag">${p.tag||(p.band<3?`⭐ Elementary contest style, ${p.pts} points`:'🏆 Middle school contest style')}</span>
+    <p class="wp-q${/^[\d,]+ ÷ [\d,]+$/.test(p.q)?' big':''}">${p.q}</p>
     ${p.figSVG||p.fig?`<div class="wp-fig">${p.figSVG||FIG[p.fig]()}</div>`:''}
     <div class="choices">${p.ch.map((c,i)=>`<button class="choice" data-i="${i}"><span class="letter">${'ABCDE'[i]}</span><span>${c}</span></button>`).join('')}</div>
     <div class="wp-tools"><button class="btn ghost" id="sayBtn" aria-label="Read the problem aloud">🔊</button><button class="btn ghost" id="hintBtn">💡 Hint</button><button class="btn ghost" id="solBtn">Show solution</button></div>
@@ -923,7 +1090,7 @@ function choose(i){
     if(G.attempt===0){G.first++;G.streak++;G.xp+=(G.hinted?7:12)+(G.streak>=3?5:0);G.res[G.i]='great';rec(stratKey(p),true);adaptAfter(true);if(G.mode==='review')removeMistake(p)}else{G.xp+=5;G.res[G.i]='ok'}
     S.bestStreak=Math.max(S.bestStreak,G.streak);
     cheer();showStreak();renderTrack();lockChoices();
-    tutorBox('Correct!',`${stratLine(p)}<details><summary>See the full solution</summary>${solList(p)}</details>`,'Next problem');
+    tutorBox(G.mode==='div'?(()=>{const t=Math.max(1,Math.round((Date.now()-G.qStart)/1000));return `Correct! ⏱ ${t} ${plural(t,'second','seconds')}`})():'Correct!',`${stratLine(p)}<details><summary>See the full solution</summary>${solList(p)}</details>`,'Next problem');
     return;
   }
   btn.classList.add('wrong');btn.disabled=true;G.streak=0;showStreak();oops();if(G.attempt===0){rec(stratKey(p),false);adaptAfter(false)}G.attempt++;
@@ -1007,7 +1174,7 @@ function home(){
   G&&cleanup();G=null;
   const h=hearts(),lv=level(),mood=h<=1?'sad':'happy';
   $('#app').innerHTML=`
-  <div class="stats"><span class="brand">Say <b>Math</b></span><span class="stat">🪙 ${S.coins}</span><span class="stat" aria-label="Best streak ${S.bestStreak}" title="Best streak">🔥 ${S.bestStreak}</span></div>
+  <div class="stats"><span class="brand" aria-label="Say Math">${[["S","#FF5A6E"],["a","#FF9F43"],["y","#F5B800"],[" ",""],["M","#2FB36B"],["a","#3B8BEB"],["t","#7C6CF2"],["h","#E05CC0"]].map(([c,col])=>c===" "?'<span class="sp"></span>':`<span style="color:${col}">${c}</span>`).join('')}</span><span class="stat"><span class="coin3d">🪙</span> ${S.coins}</span><span class="stat" aria-label="Best streak ${S.bestStreak}" title="Best streak">🔥 ${S.bestStreak}</span></div>
   <section class="pet-card">
     <div class="pet${bgClass()}" id="pet">${petSVG(mood)}</div>
     <div class="pet-info">
@@ -1019,18 +1186,18 @@ function home(){
     </div>
   </section>
   ${(()=>{const done=S.daily.last===dkey();return `<button class="daily" id="dailyBtn" ${done?'disabled':''}><span class="ic">${done?'✅':'📅'}</span><span><strong>Daily Challenge</strong><small>${done?'Done for today! Come back tomorrow.':'One special puzzle a day. Keep your streak going!'}</small></span><span class="flame">🔥 ${dailyStreak()}</span></button>`})()}
-  <h2 class="section-title">Your pet</h2>
+  <h2 class="section-title">🐾 Your pet</h2>
   <div class="pets" role="group" aria-label="Choose your pet">${Object.entries(PETS).map(([k,P])=>`<button class="petpick" data-pet="${k}" aria-pressed="${(PETS[S.pet]?S.pet:'pip')===k}">${petSVG('happy',stage(),k)}<span>${P.name}</span><small>${P.kind}</small></button>`).join('')}</div>
-  <h2 class="section-title">Grade</h2>
+  <h2 class="section-title">🎒 Grade</h2>
   <div class="grades" role="group" aria-label="Choose grade">${[0,1,2,3,4,5,6,7,8].map(g=>`<button class="chip" data-g="${g}" aria-pressed="${S.grade===g}" aria-label="Grade ${g||'K'}">${g||'K'}</button>`).join('')}</div>
   ${S.settings.adaptive&&S.adj?`<p class="adj-note">${S.adj>0?'🚀 Doing great! Problems are a little harder right now.':'🌱 Problems are a little easier right now while you practice.'}</p>`:''}
-  <h2 class="section-title">Play</h2>
+  <h2 class="section-title">🎮 Let’s play!</h2>
   <div class="modes">
-    <button class="mode" data-mode="adventure"><span class="ic" style="background:var(--sun)">✏️</span><span><strong>Math Adventure</strong><small>Write answers in column problems, with a tutor when you're stuck</small></span></button>
-    <button class="mode" data-mode="mental"><span class="ic" style="background:var(--leaf)">⚡</span><span><strong>Mental Math</strong><small>Solve as many as you can in 60 seconds</small></span></button>
+    <button class="mode" id="fluBtn"><span class="ic" style="background:#F2B705">⚡</span><span><strong>Math Fluency</strong><small>Master your ${S.grade>=3?'times tables and other ':''}math facts. Turn the whole fact map green!</small></span></button>
     <button class="mode" data-mode="audio"><span class="ic" style="background:var(--lilac)">🎧</span><span><strong>Audio Math</strong><small>Listen to the problem, then solve it without seeing it</small></span></button>
     <button class="mode" data-mode="word"><span class="ic" style="background:#FF9F6E">${S.grade<=5?'⭐':'🏆'}</span><span><strong>Contest Word Problems</strong><small>${S.grade<=5?'Elementary':'Middle school'} contest-style puzzles for ${BAND_LABEL[WP_BAND(S.grade)]}, with hints, solutions, and strategies</small></span></button>
     <button class="mode" data-mode="teach"><span class="ic" style="background:#5CC9A7">🧑‍🏫</span><span><strong>Teach ${pet().name}</strong><small>${pet().name} tried some problems but made mistakes. Can you find and fix them?</small></span></button>
+    ${S.grade>=3?`<button class="mode" id="divBtn"><span class="ic" style="background:#F06AB5">➗</span><span><strong>Division Tricks</strong><small>Faster ways to divide than long division. Learn a trick, then race the clock!</small></span></button>`:''}
     <button class="mode" id="testBtn"><span class="ic" style="background:#4C8DF6">📝</span><span><strong>Practice Test</strong><small>A timed contest-style test (${TESTCFG[WP_BAND(S.grade)].n} questions, ${TESTCFG[WP_BAND(S.grade)].min} minutes) with a full score report</small></span></button>
     ${S.mistakes.length?`<button class="mode" data-mode="review"><span class="ic" style="background:var(--miss)">🔁</span><span><strong>Review Mistakes (${S.mistakes.length})</strong><small>Try missed problems again. Solve one on the first try to clear it.</small></span></button>`:''}
   </div>
@@ -1044,15 +1211,16 @@ function home(){
   document.querySelectorAll('.petpick').forEach(b=>b.onclick=()=>{S.pet=b.dataset.pet;save();home();const p=$('#pet');p.innerHTML=petSVG('cheer');p.classList.add('bounce')});
   document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{S.grade=Number(c.dataset.g);S.adj=0;S.adapt={run:0,miss:0};save();home()});
   document.querySelectorAll('.mode').forEach(m=>m.onclick=()=>start(m.dataset.mode));
-  $('#guideBtn').onclick=guide;$('#shopBtn').onclick=shop;$('#parentBtn').onclick=parentGate;$('#testBtn').onclick=testIntro;
+  $('#guideBtn').onclick=guide;$('#shopBtn').onclick=shop;$('#parentBtn').onclick=parentGate;$('#testBtn').onclick=testIntro;if($('#divBtn'))$('#divBtn').onclick=divHome;$('#fluBtn').onclick=()=>fluHome(S.fluOp);
   $('#dailyBtn').onclick=()=>start('daily');
   $('#kp').onchange=e=>{S.keypad=e.target.checked;save()};
 }
 function cleanup(){if(G&&G.t0){logTime(Math.min(Date.now()-G.t0,30*60000));G.t0=0}document.querySelectorAll('.modal,.splat,.fly').forEach(e=>e.remove());clearInterval(G.tick);clearTimeout(G.checkT);clearTimeout(G.nextT);try{speechSynthesis.cancel()}catch(e){}}
 function speak(text){try{if(!('speechSynthesis' in window))return false;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=.85;u.lang='en-US';speechSynthesis.speak(u);return true}catch(e){return false}}
 
-function start(mode){
+function start(mode,trick){
   G={mode,i:0,total:mode==='mental'?Infinity:mode==='daily'?1:5,res:[],streak:0,wrongRun:0,mood:'happy',coins:0,xp:0,correct:0,first:0,attempt:0,p:null,busy:false,used:[],hinted:false,t0:Date.now(),startXp:S.xp,end:mode==='mental'?Date.now()+60000:0};
+  G.trick=trick||null;
   if(mode==='review'){G.queue=shuffle(S.mistakes.map(m=>({...m}))).slice(0,10);G.total=G.queue.length;if(!G.total){G=null;home();toast('No mistakes to review. Nice work!');return}}
   $('#app').innerHTML=`
   <div class="playbar">
@@ -1081,9 +1249,9 @@ function cellFor(n){const W=$('#problem').clientWidth-28;return Math.max(34,Math
 function renderHintLine(){const h=$('#hintline');if(h)h.textContent=S.keypad?'Tap a box, then use the keypad.':'Write one digit in each box. Tap a box to rewrite it.'}
 function next(){
   if(G.mode==='teach'){$('#keypad').hidden=true;$('#swap').hidden=true;G.attempt=0;G.busy=false;$('#tutor').innerHTML='';renderTrack();renderTeach();window.scrollTo(0,0);return}
-  const isWord=G.mode==='word'||G.mode==='daily'||(G.mode==='review'&&G.queue[G.i].kind==='word');
+  const isWord=G.mode==='word'||G.mode==='div'||G.mode==='daily'||(G.mode==='review'&&G.queue[G.i].kind==='word');
   $('#keypad').hidden=isWord||!S.keypad;$('#swap').hidden=isWord;
-  if(isWord){G.attempt=0;G.busy=false;G.hinted=false;$('#tutor').innerHTML='';renderTrack();renderWord(G.mode==='daily'?dailyProblem():G.mode==='review'?{...G.queue[G.i]}:pickWord());window.scrollTo(0,0);return}
+  if(isWord){G.attempt=0;G.busy=false;G.hinted=false;$('#tutor').innerHTML='';renderTrack();renderWord(G.mode==='div'?divProblem():G.mode==='daily'?dailyProblem():G.mode==='review'?{...G.queue[G.i]}:pickWord());window.scrollTo(0,0);return}
   G.p=G.mode==='review'?{...G.queue[G.i]}:G.mode==='adventure'?genAdventure(eg()):genQuick(eg());G.attempt=0;G.busy=false;
   if(G.mood==='disappointed')setMood('happy');
   $('#tutor').innerHTML='';renderTrack();
@@ -1121,7 +1289,11 @@ function next(){
   goNext();
 }
 function setMood(mood,anim){const m=$('#mini');if(!m)return;G.mood=mood;m.innerHTML=petSVG(mood);m.classList.remove('bounce','sulk','fume');if(anim){void m.offsetWidth;m.classList.add(anim)}}
-function cheer(){G.wrongRun=0;sfx('right');setMood('cheer','bounce');setTimeout(()=>{if($('#mini')&&G&&G.mood==='cheer')setMood('happy')},1000)}
+function confetti(n=22){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const c=document.createElement('div');c.className='confetti';c.setAttribute('aria-hidden','true');
+  const cols=['#FFD84D','#5BD08A','#A78BFA','#FF9F6E','#4FD1C5','#60A5FA','#FF7A85'];
+  c.innerHTML=Array.from({length:n},()=>`<i style="--x:${rnd(5,95)}%;--c:${pick(cols)};--r:${rnd(0,360)}deg;--d:${(1+Math.random()*.8).toFixed(2)}s;--w:${(Math.random()*.25).toFixed(2)}s;--sx:${rnd(-60,60)}px"></i>`).join('');
+  document.body.append(c);setTimeout(()=>c.remove(),2300)}
+function cheer(){G.wrongRun=0;sfx('right');confetti(G&&G.mode==='mental'?10:22);setMood('cheer','bounce');setTimeout(()=>{if($('#mini')&&G&&G.mood==='cheer')setMood('happy')},1000)}
 const APPLE=`<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 16 C18 8 6 16 8 32 C10 48 20 56 30 52 C40 56 50 48 52 32 C54 16 42 8 30 16Z" fill="#E8333F"/><path d="M30 16 Q29 8 33 4" stroke="#6B3E1F" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M32 10 Q42 2 48 8 Q40 14 32 10Z" fill="#3BA55C"/><ellipse cx="20" cy="27" rx="4" ry="7" fill="#fff" opacity=".45"/></svg>`;
 const CRACKS='M150 150 L58 36 M150 150 L272 66 M150 150 L284 222 M150 150 L36 254 M150 150 L172 292 M150 150 L16 138 M104 94 L84 118 M216 108 L236 130 M212 186 L196 214';
 const SPLAT=`<svg viewBox="0 0 300 300" aria-hidden="true">
@@ -1241,7 +1413,7 @@ function finish(){
   if(G.mode==='review')extra=S.mistakes.length?` ${S.mistakes.length} ${plural(S.mistakes.length,'problem','problems')} left to review.`:' Your review list is all clear!';
   const oldStage=stage();S.xp+=G.xp;S.coins+=G.coins;if(mental)S.bestMental=Math.max(S.bestMental,G.correct);save();
   const grew=stage()>oldStage,lvUp=level()>level(G.startXp);
-  const title=G.mode==='teach'?(stars>=2?'You’re a great teacher!':stars?'Good teaching!':'Teaching is tricky. Keep at it!'):G.mode==='daily'?(G.first?'Daily Challenge solved!':'Daily Challenge done!'):G.mode==='review'?(G.first?`You fixed ${G.first} ${plural(G.first,'mistake','mistakes')}!`:'Keep practicing these!'):stars===3?'Amazing round!':stars===2?'Great work!':stars===1?'Good practice!':'Keep going, you’ll get there!';
+  const title=G.mode==='div'?(stars>=2?'Division whiz! ➗':stars?'Nice dividing!':'Keep practicing those tricks!'):G.mode==='teach'?(stars>=2?'You’re a great teacher!':stars?'Good teaching!':'Teaching is tricky. Keep at it!'):G.mode==='daily'?(G.first?'Daily Challenge solved!':'Daily Challenge done!'):G.mode==='review'?(G.first?`You fixed ${G.first} ${plural(G.first,'mistake','mistakes')}!`:'Keep practicing these!'):stars===3?'Amazing round!':stars===2?'Great work!':stars===1?'Good practice!':'Keep going, you’ll get there!';
   if(lvUp)sfx('level');else if(stars)sfx('streak');
   $('#app').innerHTML=`<section class="results">
     <div class="pet bounce${bgClass()}">${petSVG(stars?'cheer':'happy')}</div>
@@ -1251,7 +1423,7 @@ function finish(){
     <div class="earn"><span class="stat">🪙 +${G.coins} coins</span><span class="stat">⭐ +${G.xp} points</span></div>
     <div class="actions"><button class="btn big" id="again">Play again</button><button class="btn big ghost" id="back">Home</button></div>
   </section>`;
-  const mode=G.mode;$('#again').onclick=()=>start(mode);$('#back').onclick=home;
+  const mode=G.mode,tr=G.trick;$('#again').onclick=()=>start(mode,tr);$('#back').onclick=home;
   if(mode==='daily'||(mode==='review'&&!S.mistakes.length))$('#again').remove();
 }
 /* ---------- Teach Your Pet: the pet shows its work with a classic mistake; the child finds and fixes it ---------- */
@@ -1437,6 +1609,211 @@ function fixAnswer(i){
   tutorBox(ok?'Thanks for teaching me!':'Here’s the right answer',`<p>${t.fix}</p><p style="margin-top:8px"><strong>The right way:</strong></p><ol>${t.good.map(s=>`<li>${s}</li>`).join('')}</ol><p class="ans">Answer: ${t.ans}</p>`,'Next problem');
 }
 
+/* ---------- Division Tricks: faster ways to divide ---------- */
+const fN=n=>Number(n).toLocaleString('en-US');
+const DIV={
+  rules:{icon:'🔍',name:'Divisibility rules',min:4,tip:'Check quickly whether a number divides evenly, without dividing at all.',when:'Use it to check answers, simplify fractions, or spot factors fast.',
+    ex:{q:'Can 1,236 be divided evenly by 3?',steps:['Rule for 3: add up the digits. If that sum divides by 3, the whole number does too.','1 + 2 + 3 + 6 = 12.','12 ÷ 3 = 4, so yes! 1,236 divides evenly by 3.','More rules: 2 → ends in an even digit. 5 → ends in 0 or 5. 4 → the last two digits divide by 4. 9 → the digits add up to a multiple of 9. 6 → it’s even AND passes the rule for 3.']},
+    gen(){const k=pick([3,4,6,9]);let c;do{c=rnd(100,9999)}while(c%k);const wr=new Set();let guard=0;
+      while(wr.size<4&&guard++<500){let x=rnd(100,9999);if(k===6&&wr.size===0){x=rnd(34,3333)*3;if(x%2===0)x+=3}if(x%k&&x!==c)wr.add(x)}
+      const ds=String(c).split('').map(Number),sum=ds.reduce((a,b)=>a+b,0),l2=c%100;
+      const steps={3:[`Rule for 3: add the digits. If the sum divides by 3, the number does too.`,`For ${fN(c)}: ${ds.join(' + ')} = ${sum}, and ${sum} ÷ 3 = ${sum/3}.`,`So ${fN(c)} divides evenly by 3.`],
+        9:[`Rule for 9: add the digits. If the sum divides by 9, the number does too.`,`For ${fN(c)}: ${ds.join(' + ')} = ${sum}, and ${sum} ÷ 9 = ${sum/9}.`,`So ${fN(c)} divides evenly by 9.`],
+        4:[`Rule for 4: look only at the last two digits.`,`${fN(c)} ends in ${String(l2).padStart(2,'0')}, and ${l2} ÷ 4 = ${l2/4}.`,`So ${fN(c)} divides evenly by 4.`],
+        6:[`Rule for 6: the number must be even AND pass the rule for 3.`,`${fN(c)} is even, and ${ds.join(' + ')} = ${sum}, which divides by 3.`,`So ${fN(c)} divides evenly by 6.`]}[k];
+      return {q:`Which number can be divided by ${k} with no remainder?`,ans:fN(c),dis:[...wr].map(fN),steps,hint:{3:'Add up the digits of each number. Does the sum divide by 3?',9:'Add up the digits of each number. Does the sum divide by 9?',4:'Look only at the last two digits of each number.',6:'It must be even, and its digits must add up to a multiple of 3.'}[k]}}},
+  think:{icon:'🔄',name:'Think multiplication',min:3,tip:'Flip the division around into a times-table question.',when:'Use it for any division fact you know from your times tables.',
+    ex:{q:'63 ÷ 7',steps:['Turn it around: 7 × ? = 63.','From the times tables: 7 × 9 = 63.','So 63 ÷ 7 = 9.']},
+    gen(g){const d=rnd(2,g>=4?12:9),q=rnd(2,g>=4?12:10),N=d*q;
+      return {q:`${N} ÷ ${d}`,ans:q,dis:[q+1,q-1,d,q+2],steps:[`Turn it around: ${d} × ? = ${N}.`,`${d} × ${q} = ${N}.`,`So ${N} ÷ ${d} = ${q}.`],hint:`Ask yourself: ${d} times what makes ${N}?`}}},
+  split:{icon:'✂️',name:'Split into friendly parts',min:3,tip:'Break the big number into pieces that are easy to divide, then add the answers.',when:'Use it when part of the number is an easy multiple, like 80 or 120.',
+    ex:{q:'96 ÷ 4',steps:['Split 96 into parts that are easy to divide by 4: 80 + 16.','80 ÷ 4 = 20.','16 ÷ 4 = 4.','Add: 20 + 4 = 24. So 96 ÷ 4 = 24.']},
+    gen(g){const d=rnd(3,9),t=rnd(1,g>=5?20:9),u=rnd(1,9),q=10*t+u,N=d*q,big=d*10*t,small=d*u;
+      return {q:`${fN(N)} ÷ ${d}`,ans:q,dis:[q+10,q-1,10*t,t+u],steps:[`Split ${fN(N)} into ${fN(big)} + ${small}, which are easy to divide by ${d}.`,`${fN(big)} ÷ ${d} = ${10*t}.`,`${small} ÷ ${d} = ${u}.`,`Add: ${10*t} + ${u} = ${q}.`],hint:`Find a big, easy multiple of ${d} inside ${fN(N)}, like ${fN(big)}.`}}},
+  halve:{icon:'🌗',name:'Halving trick',min:3,tip:'Dividing by 4 is halving twice. Dividing by 8 is halving three times.',when:'Use it for ÷ 4 and ÷ 8 (and ÷ 2, of course).',
+    ex:{q:'168 ÷ 8',steps:['Dividing by 8 means halving 3 times.','Half of 168 is 84.','Half of 84 is 42.','Half of 42 is 21. So 168 ÷ 8 = 21.']},
+    gen(g){const d=g<=3?4:pick([4,8]),q=rnd(11,d===4?75:40),N=d*q,h=[N];while(h.length<(d===4?3:4))h.push(h[h.length-1]/2);
+      return {q:`${N} ÷ ${d}`,ans:q,dis:[q*2,q+2,N/2,q-1],steps:[`Dividing by ${d} means halving ${d===4?'twice':'3 times'}.`,...h.slice(1).map((v,i)=>`Half of ${h[i]} is ${v}.`),`So ${N} ÷ ${d} = ${q}.`],hint:`Halve ${N}, then halve again${d===8?', and once more':''}.`}}},
+  five:{icon:'🖐️',name:'Dividing by 5, 25, or 50',min:4,tip:'÷ 5: double, then ÷ 10.  ÷ 25: × 4, then ÷ 100.  ÷ 50: × 2, then ÷ 100.',when:'Use it whenever you divide by 5, 25, or 50.',
+    ex:{q:'85 ÷ 5',steps:['Dividing by 5 is the same as doubling, then dividing by 10.','Double 85: 170.','170 ÷ 10 = 17.','So 85 ÷ 5 = 17.']},
+    gen(g){const d=pick(g>=5?[5,25,50]:[5]),q=d===5?rnd(13,99):d===25?rnd(3,40):rnd(3,30),N=d*q,m={5:2,25:4,50:2}[d],t={5:10,25:100,50:100}[d];
+      return {q:`${fN(N)} ÷ ${d}`,ans:q,dis:[q*2,q+1,q-1,Math.round(N/10)],steps:[`Dividing by ${d} is the same as multiplying by ${m}, then dividing by ${t}.`,`${fN(N)} × ${m} = ${fN(N*m)}.`,`${fN(N*m)} ÷ ${t} = ${q}.`,`So ${fN(N)} ÷ ${d} = ${q}.`],hint:d===5?`Double ${N}, then divide by 10.`:`Multiply ${N} by ${m}, then divide by ${t}.`}}},
+  zeros:{icon:'0️⃣',name:'Cross off zeros',min:4,tip:'If both numbers end in zeros, cross off the same number of zeros from each.',when:'Use it for problems like 4,800 ÷ 60 or 36,000 ÷ 900.',
+    ex:{q:'4,800 ÷ 60',steps:['Both numbers end in 0, so cross off one zero from each.','4,800 ÷ 60 becomes 480 ÷ 6.','48 ÷ 6 = 8, so 480 ÷ 6 = 80.','So 4,800 ÷ 60 = 80.']},
+    gen(g){const d0=rnd(2,9),zd=g>=6?pick([1,2]):1,q=rnd(2,12)*pick([1,10]),d=d0*10**zd,N=d*q,M=N/10**zd;
+      return {q:`${fN(N)} ÷ ${fN(d)}`,ans:q,dis:[q*10,q%10===0?q/10:q+1,q*100,q+d0],steps:[`Both numbers end in ${zd===1?'a zero':'two zeros'}, so cross off ${zd===1?'one zero':'two zeros'} from each.`,`${fN(N)} ÷ ${fN(d)} becomes ${fN(M)} ÷ ${d0}.`,`${fN(M)} ÷ ${d0} = ${q}.`],hint:`Cross off ${zd===1?'one zero':'two zeros'} from BOTH numbers first.`}}},
+  simplify:{icon:'🪄',name:'Shrink both numbers',min:5,tip:'Divide both numbers by the same thing. The answer stays the same, but the problem gets easier.',when:'Use it when both numbers share an easy factor, like 2 or 5.',
+    ex:{q:'420 ÷ 35',steps:['Both numbers can be divided by 5.','420 ÷ 5 = 84, and 35 ÷ 5 = 7.','So 420 ÷ 35 is the same as 84 ÷ 7.','84 ÷ 7 = 12.']},
+    gen(){const[d,f]=pick([[15,5],[35,5],[45,5],[12,2],[14,2],[16,2],[18,2],[24,4],[32,4]]),d2=d/f,q=rnd(4,20),N=d*q;
+      return {q:`${N} ÷ ${d}`,ans:q,dis:[q+1,q-2,q*f,N/f],steps:[`Both numbers can be divided by ${f}.`,`${N} ÷ ${f} = ${N/f}, and ${d} ÷ ${f} = ${d2}.`,`So it’s the same as ${N/f} ÷ ${d2}.`,`${N/f} ÷ ${d2} = ${q}.`],hint:`Both ${N} and ${d} can be divided by ${f}. Shrink them first.`}}},
+  chunk:{icon:'🧱',name:'Chunking',min:4,tip:'Take away big, easy chunks (like 100 or 10 groups) and count how many groups you took.',when:'Use it for big numbers, instead of long division.',
+    ex:{q:'852 ÷ 6',steps:['Take away big, easy chunks of 6.','100 × 6 = 600. 852 − 600 = 252 left.','40 × 6 = 240. 252 − 240 = 12 left.','2 × 6 = 12. 12 − 12 = 0 left.','Add the chunks: 100 + 40 + 2 = 142.']},
+    gen(g){const d=g>=6?rnd(11,25):rnd(3,9),q=g>=6?rnd(20,99):rnd(30,299),N=d*q,steps=[`Take away big, easy chunks of ${d}.`],ch=[];let left=N;
+      for(const p of [100,10,1]){const k=Math.floor(left/(d*p));if(k>0){const take=k*p*d;steps.push(`${k*p} × ${d} = ${fN(take)}. ${fN(left)} − ${fN(take)} = ${fN(left-take)} left.`);ch.push(k*p);left-=take}}
+      steps.push(`Add the chunks: ${ch.join(' + ')} = ${q}.`);
+      return {q:`${fN(N)} ÷ ${d}`,ans:q,dis:[q+10,q-10,q+1,ch[0]],steps,hint:`Start with an easy chunk, like ${q>=100?100:10} × ${d} = ${fN((q>=100?100:10)*d)}.`}}},
+  estimate:{icon:'🎯',name:'Estimate first',min:4,tip:'Round to friendly numbers to know roughly how big the answer should be. Wrong answers often jump out.',when:'Use it on multiple-choice questions and to check your work.',
+    ex:{q:'Which answer to 1,215 ÷ 3 makes sense: 45, 405, or 4,050?',steps:['1,215 is close to 1,200.','1,200 ÷ 3 = 400.','So the answer must be close to 400. Only 405 fits.','Check: 405 × 3 = 1,215. ✓']},
+    gen(){const d=rnd(3,9),q=rnd(152,489),R=Math.round(q/100)*100,N=d*q;
+      return {q:`Without working it all out, which answer to ${fN(N)} ÷ ${d} makes sense?`,ans:q,dis:[q*10,Math.round(q/10),q+200,q+100].filter(v=>Math.abs(v-q)>=60),fmt:fN,
+        steps:[`${fN(N)} is close to ${fN(R*d)}.`,`${fN(R*d)} ÷ ${d} = ${R}.`,`So the answer is close to ${R}. Only ${q} fits.`,`Check: ${q} × ${d} = ${fN(N)}. ✓`],hint:`Round ${fN(N)} to a nearby number that ${d} divides easily.`}}}
+};
+function divProblem(){
+  const g=Math.max(3,S.grade),keys=G.trick?[G.trick]:Object.keys(DIV).filter(k=>DIV[k].min<=g),fresh=keys.filter(k=>!G.used.includes(k)),k=pick(fresh.length?fresh:keys);G.used.push(k);
+  const t=DIV[k],o=t.gen(g),{ch,a}=mc(o.ans,o.dis,o.fmt||String);
+  return {id:'div:'+k,kind:'word',band:WP_BAND(S.grade),pts:3,st:k,tag:`${t.icon} ${t.name}`,q:o.q,ch,a,hint:o.hint,sol:o.steps};
+}
+function divHome(){
+  if(G)cleanup();G=null;const g=Math.max(3,S.grade);
+  $('#app').innerHTML=`<div class="playbar"><button class="iconbtn" id="dback" aria-label="Back to home">←</button><h1 class="gtitle">➗ Division Tricks</h1></div>
+  <p class="say" style="margin-top:12px">Long division works, but these tricks are often much faster. Learn one, practice it, and watch your times drop!</p>
+  <button class="daily" id="dmix" style="margin-top:4px;background:linear-gradient(135deg,#F9A8D4,#C084FC)"><span class="ic">🎲</span><span><strong>Mixed practice</strong><small>5 problems using different tricks</small></span></button>
+  <div class="guide" style="margin-top:14px">${Object.entries(DIV).map(([k,t])=>`<article class="gcard dcard"><h2>${t.icon} ${t.name}${t.min>g?` <span class="gtag">grade ${t.min}+</span>`:''}</h2><p>${t.tip}</p>
+    <div class="dbtns"><button class="btn ghost" data-learn="${k}">📖 Learn</button><button class="btn" data-prac="${k}">✏️ Practice</button></div></article>`).join('')}</div>`;
+  $('#dback').onclick=home;$('#dmix').onclick=()=>start('div');
+  document.querySelectorAll('[data-learn]').forEach(b=>b.onclick=()=>divLesson(b.dataset.learn));
+  document.querySelectorAll('[data-prac]').forEach(b=>b.onclick=()=>start('div',b.dataset.prac));
+}
+function divLesson(k){
+  const t=DIV[k];let shown=1;
+  const draw=()=>{
+    $('#app').innerHTML=`<div class="playbar"><button class="iconbtn" id="lback" aria-label="Back to Division Tricks">←</button><h1 class="gtitle">${t.icon} ${t.name}</h1></div>
+    <div class="gcard" style="margin-top:12px"><p><strong>The trick:</strong> ${t.tip}</p><p class="legal" style="margin:4px 0 0">${t.when}</p></div>
+    <div class="problem lesson"><div class="lesson-q">${t.ex.q}</div>
+      <div class="pw" style="width:100%"><div class="pw-face">${petSVG(shown>=t.ex.steps.length?'cheer':'happy')}</div><div class="bubble">${shown>=t.ex.steps.length?'That’s the trick! Your turn.':'Watch how I do it, step by step.'}</div></div>
+      <ol class="psteps lsteps">${t.ex.steps.slice(0,shown).map((s,i)=>`<li><div class="pstep${i===shown-1?' new':''}">${s}</div></li>`).join('')}</ol></div>
+    <div class="actions" style="margin-top:14px">${shown<t.ex.steps.length?'<button class="btn big" id="lnext">Show next step ▶</button>':`<button class="btn big" id="lgo">✏️ Try 5 problems</button>`}<button class="btn big ghost" id="lsay">🔊</button></div>`;
+    $('#lback').onclick=divHome;$('#lsay').onclick=()=>speak(sayFix(t.ex.q+'. '+t.ex.steps.slice(0,shown).join(' ')));
+    if($('#lnext'))$('#lnext').onclick=()=>{shown++;sfx('tap');draw()};
+    if($('#lgo'))$('#lgo').onclick=()=>start('div',k);
+  };draw();
+}
+
+/* ---------- Math Fluency: master basic facts with spaced repetition ---------- */
+const FLU_OPS={add:{sym:'+',name:'Addition'},sub:{sym:'−',name:'Subtraction'},mul:{sym:'×',name:'Multiplication'},div:{sym:'÷',name:'Division'}};
+const fluOps=()=>S.grade>=3?['mul','div','add','sub']:['add','sub'];
+const fluMax=op=>op==='add'||op==='sub'?(S.grade===0?5:10):(S.grade<=3?10:12);
+const fluTarget=()=>S.grade<=2?4000:3000;
+function fluData(op){if(!S.flu)S.flu={};return S.flu[op]||(S.flu[op]={})}
+function fluFact(op,x,y){if(op==='add')return{q:`${x} + ${y}`,ans:x+y};if(op==='sub')return{q:`${x+y} − ${y}`,ans:x};if(op==='mul')return{q:`${x} × ${y}`,ans:x*y};return{q:`${x*y} ÷ ${y}`,ans:x}}
+function fluCells(op){const M=fluMax(op),out=[];for(let x=0;x<=M;x++)for(let y=op==='div'?1:0;y<=M;y++)out.push([x,y]);return out}
+function fluLevel(r){if(!r||!r.n)return'none';if(r.box>=3)return'master';if(r.box===2)return'almost';if(r.box===1)return'learn';return'weak'}
+function fluStats(op){const d=fluData(op),cells=fluCells(op);let m=0;for(const[x,y]of cells)if(fluLevel(d[x+','+y])==='master')m++;return{m,t:cells.length}}
+function fluTip(op,x,y){
+  if(op==='add'){const a=Math.max(x,y),b=Math.min(x,y);
+    if(b===0)return`Adding 0 doesn’t change the number: ${a} + 0 = ${a}.`;if(a===10)return`Adding 10 just adds one ten: 10 + ${b} = ${10+b}.`;
+    if(x===y)return`Doubles! ${x} + ${x} = ${2*x}.`;if(a-b===1)return`Near double: ${b} + ${b} = ${2*b}, plus 1 more is ${2*b+1}.`;
+    if(a+b>10&&a>=7)return`Make 10: ${a} + ${10-a} = 10, then add the ${b-(10-a)} left over: ${a+b}.`;
+    return`Start at the bigger number, ${a}, and count on ${b}: ${Array.from({length:b},(_,i)=>a+i+1).join(', ')}.`}
+  if(op==='sub')return`Think addition: ${y} + ? = ${x+y}. Since ${y} + ${x} = ${x+y}, the answer is ${x}.`;
+  const mulTip=(p,q)=>{const pr=[0,1,10,2,5,9,11,4,3,6,8,12,7],k=pr.find(v=>v===p||v===q),o=k===p?q:p;
+    return{0:`Anything times 0 is 0.`,1:`Times 1 stays the same: ${o}.`,10:`Times 10: put a zero on the end. ${o} × 10 = ${o*10}.`,2:`Times 2 is a double: ${o} + ${o} = ${o*2}.`,
+      5:`Times 5 is half of times 10: ${o} × 10 = ${o*10}, and half is ${o*5}.`,9:`Times 9: ${o} × 10 = ${o*10}, minus one ${o} = ${o*9}.`,11:o<10?`Times 11 for a single digit: write it twice: ${o}${o}.`:`${o} × 10 = ${o*10}, plus one more ${o} = ${o*11}.`,
+      4:`Times 4: double, then double again. ${o} → ${o*2} → ${o*4}.`,3:`Times 3: double it, then add one more. ${o*2} + ${o} = ${o*3}.`,6:`Times 6: times 5 plus one more. ${o*5} + ${o} = ${o*6}.`,
+      8:`Times 8: double three times. ${o} → ${o*2} → ${o*4} → ${o*8}.`,12:`Times 12: times 10 plus times 2. ${o*10} + ${o*2} = ${o*12}.`,7:`Times 7: times 5 plus times 2. ${o*5} + ${o*2} = ${o*7}.`}[k]};
+  if(op==='mul')return mulTip(x,y);
+  return`Think multiplication: ${y} × ? = ${x*y}. ${mulTip(x,y)}`;
+}
+function fluHome(op){
+  if(G)cleanup();G=null;const ops=fluOps();op=op&&ops.includes(op)?op:ops[0];S.fluOp=op;
+  const d=fluData(op),M=fluMax(op),y0=op==='div'?1:0,st=fluStats(op),sym=FLU_OPS[op].sym;
+  let grid=`<div class="fgrid" style="--cols:${M-y0+2}"><div class="fh corner">${sym}</div>`;
+  for(let y=y0;y<=M;y++)grid+=`<div class="fh">${y}</div>`;
+  for(let x=0;x<=M;x++){grid+=`<button class="fh rowh" data-row="${x}" aria-label="Practice the ${x}s">${x}</button>`;
+    for(let y=y0;y<=M;y++){const r=d[x+','+y],f=fluFact(op,x,y);grid+=`<button class="fc ${fluLevel(r)}" data-x="${x}" data-y="${y}" aria-label="${f.q}"></button>`}}
+  grid+='</div>';
+  $('#app').innerHTML=`<div class="playbar"><button class="iconbtn" id="fback" aria-label="Back to home">←</button><h1 class="gtitle">⚡ Math Fluency</h1></div>
+  <div class="tabs" role="tablist">${ops.map(o=>`<button class="tab" role="tab" aria-selected="${o===op}" data-op="${o}">${FLU_OPS[o].sym} ${FLU_OPS[o].name}</button>`).join('')}</div>
+  <div class="gcard fsum"><div><strong>${st.m} of ${st.t}</strong> facts mastered</div><div class="xpbar"><span style="width:${Math.round(100*st.m/st.t)}%"></span></div>
+    <p class="legal" style="margin:6px 0 0">A fact is mastered when you get it right in under ${fluTarget()/1000} seconds, several times in a row.</p></div>
+  <button class="btn big fgo" id="fgo">🚀 Start a sprint (20 facts)</button>
+  <h2 class="section-title">🗺️ Your fact map</h2>
+  <p class="say" style="margin:0 0 8px">Tap a number on the left to practice just that row. Tap a square to see its fact.</p>
+  <div class="gcard fwrap">${grid}</div>
+  <div class="flegend"><span><i class="fc none"></i>Not tried</span><span><i class="fc weak"></i>Needs work</span><span><i class="fc learn"></i>Learning</span><span><i class="fc almost"></i>Almost</span><span><i class="fc master"></i>Mastered</span></div>`;
+  $('#fback').onclick=home;$('#fgo').onclick=()=>fluStart(op,null);
+  document.querySelectorAll('[data-op]').forEach(b=>b.onclick=()=>fluHome(b.dataset.op));
+  document.querySelectorAll('.rowh').forEach(b=>b.onclick=()=>fluStart(op,Number(b.dataset.row)));
+  document.querySelectorAll('.fc[data-x]').forEach(b=>b.onclick=()=>{const x=+b.dataset.x,y=+b.dataset.y,f=fluFact(op,x,y),r=d[x+','+y];
+    toast(`${f.q} = ${f.ans}  ·  ${r&&r.n?`right ${r.c} of ${r.n} times${fluLevel(r)==='master'?' ✅ mastered':''}`:'not tried yet'}`)});
+}
+function fluQueue(op,focus){
+  const d=fluData(op);let cells=fluCells(op);
+  if(focus!==null)cells=cells.filter(([x,y])=>op==='mul'||op==='add'?(x===focus||y===focus):(op==='div'?y===focus||x===focus:y===focus||x===focus));
+  const W=[5,3,2,.6,.25];
+  const scored=cells.map(([x,y])=>{const r=d[x+','+y];const base=!r||!r.n?3:W[Math.min(r.box,4)];return{x,y,w:base*(0.4+Math.random())}}).sort((a,b)=>b.w-a.w);
+  let q=scored.slice(0,20);while(q.length<20)q=q.concat(shuffle(scored.map(o=>({...o}))).slice(0,20-q.length));
+  return shuffle(q);
+}
+function fluStart(op,focus){
+  G={mode:'flu',op,focus,q:fluQueue(op,focus),i:0,total:20,typed:'',t0:Date.now(),startXp:S.xp,correct:0,fast:0,streak:0,best:0,wrongRun:0,mood:'happy',newly:[],busy:false};
+  $('#app').innerHTML=`<div class="playbar"><button class="iconbtn" id="fquit" aria-label="Stop the sprint">✕</button>
+    <div class="track ttrack"><span id="fprog"></span><span id="fstk"></span></div><div class="mini" id="mini">${petSVG('happy')}</div></div>
+    ${focus!==null?`<p class="say" style="text-align:center;margin:8px 0 0">Practicing the ${focus}s</p>`:''}
+    <div class="problem flu-card"><div id="fpic" style="width:100%"></div><div class="flu-fact" id="ffact"></div><div class="flu-timer"><span id="ftbar"></span></div><div class="flu-tip" id="ftip" aria-live="polite"></div></div>
+    <div class="keypad flu-keys">${[1,2,3,4,5,6,7,8,9].map(n=>`<button data-fk="${n}">${n}</button>`).join('')}<button data-fk="skip" aria-label="I don’t know">🤷</button><button data-fk="0">0</button><button data-fk="del" aria-label="Delete">⌫</button></div>`;
+  $('#fquit').onclick=()=>{if(G.i>0)fluFinish();else home()};
+  document.querySelectorAll('[data-fk]').forEach(b=>b.onclick=()=>fluKey(b.dataset.fk));
+  fluNext();
+}
+function fluNext(){
+  if(G.i>=G.q.length){fluFinish();return}
+  const c=G.q[G.i],f=fluFact(G.op,c.x,c.y);G.cur={...c,...f};G.typed='';G.busy=false;G.qt=Date.now();
+  $('#fprog').textContent=`${G.i+1} / ${G.q.length}`;$('#fstk').textContent=G.streak>=3?`🔥 ${G.streak}`:'';
+  $('#ftip').textContent='';$('#ftip').className='flu-tip';fluDraw();
+  $('#fpic').innerHTML=S.grade===0&&(G.op==='add'||G.op==='sub')?countPicture({type:G.op,a:G.op==='add'?c.x:c.x+c.y,b:c.y}):'';
+  const ff=$('#ffact');ff.classList.remove('flip-in');void ff.offsetWidth;ff.classList.add('flip-in');
+  const bar=$('#ftbar');bar.style.transition='none';bar.style.width='100%';bar.classList.remove('late');void bar.offsetWidth;bar.style.transition=`width ${fluTarget()}ms linear`;bar.style.width='0%';
+  clearTimeout(G.lateT);G.lateT=setTimeout(()=>{const b=$('#ftbar');if(b)b.classList.add('late')},fluTarget());
+}
+function fluDraw(state=''){$('#ffact').innerHTML=`${G.cur.q} = <span class="flu-ans ${state}">${G.typed||'?'}</span>`}
+function fluKey(k){
+  if(!G||G.mode!=='flu'||G.busy)return;
+  if(k==='del'){G.typed=G.typed.slice(0,-1);fluDraw();return}
+  if(k==='skip'){fluAnswer(false,true);return}
+  if(G.typed.length>=3)return;G.typed+=k;fluDraw();
+  if(G.typed.length===String(G.cur.ans).length)fluAnswer(Number(G.typed)===G.cur.ans);
+}
+document.addEventListener('keydown',e=>{if(!G||G.mode!=='flu')return;if(/^[0-9]$/.test(e.key))fluKey(e.key);else if(e.key==='Backspace')fluKey('del')});
+function fluAnswer(ok,skipped=false){
+  G.busy=true;clearTimeout(G.lateT);{const bar=$('#ftbar');if(bar){bar.style.width=getComputedStyle(bar).width;bar.style.transition='none'}}const c=G.cur,ms=Date.now()-G.qt,fast=ok&&ms<=fluTarget(),d=fluData(G.op),key=c.x+','+c.y;
+  const r=d[key]||(d[key]={n:0,c:0,box:0});const before=fluLevel(r);r.n++;
+  if(ok){r.c++;r.box=fast?Math.min(4,(r.box||0)+1):Math.max(1,r.box||0)}else r.box=0;
+  if(before!=='master'&&fluLevel(r)==='master')G.newly.push(c.q+' = '+c.ans);
+  rec('flu:'+G.op,fast);
+  if(ok){G.correct++;if(fast)G.fast++;G.streak++;G.best=Math.max(G.best,G.streak);fluDraw('ok');sfx('right');
+    if(G.streak%5===0)cheer();$('#ftip').textContent=fast?pick(['⚡ Lightning fast!','🚀 Super quick!','✨ Nice!','💪 Got it!']):`✓ Right! Try to get faster. (${(ms/1000).toFixed(1)} s)`;$('#ftip').className='flu-tip good';
+    G.i++;setTimeout(fluNext,fast?450:900);}
+  else{G.streak=0;sfx('wrong');G.typed=String(c.ans);fluDraw('fix');
+    $('#ftip').innerHTML=`${skipped?'':'Not quite. '}<strong>${c.q} = ${c.ans}</strong><br>💡 ${fluTip(G.op,c.x,c.y)}`;$('#ftip').className='flu-tip bad';
+    const back={x:c.x,y:c.y,w:0};G.q.splice(Math.min(G.q.length,G.i+4),0,back);if(G.q.length>30)G.q.length=30;
+    G.i++;setTimeout(fluNext,2600);}
+  save();
+}
+function fluFinish(){
+  clearTimeout(G.lateT);const used=Date.now()-G.t0;cleanup();
+  const done=G.i,mins=Math.max(used/60000,.25),fpm=Math.round(G.correct/mins),oldStage=stage(),xp=G.correct*4+G.newly.length*5,coins=Math.floor(G.correct/2)+G.newly.length*2;
+  S.xp+=xp;S.coins+=coins;S.fluBest=S.fluBest||{};const bk=G.op;const prevBest=S.fluBest[bk]||0;if(fpm>prevBest&&done>=10)S.fluBest[bk]=fpm;save();
+  const lvUp=level()>level(G.startXp);if(lvUp)sfx('level');else if(G.correct)sfx('streak');
+  const st=fluStats(G.op);
+  $('#app').innerHTML=`<section class="results">
+    <div class="pet bounce${bgClass()}">${petSVG(G.fast>=done*.7?'cheer':'happy')}</div>
+    <h1>${G.fast>=done*.8?'Lightning fast! ⚡':G.correct>=done*.7?'Great sprint!':'Good practice!'}</h1>
+    <div class="kpis" style="text-align:left">
+      <div class="kpi"><strong>${G.correct} / ${done}</strong><span>correct</span></div>
+      <div class="kpi"><strong>${G.fast}</strong><span>super fast (under ${fluTarget()/1000} s)</span></div>
+      <div class="kpi"><strong>${fpm}</strong><span>facts per minute${fpm>prevBest&&prevBest&&done>=10?' 🏆 new best!':''}</span></div>
+      <div class="kpi"><strong>🔥 ${G.best}</strong><span>best streak</span></div>
+    </div>
+    ${G.newly.length?`<div class="gcard" style="margin-top:12px;text-align:left"><strong>🎉 Newly mastered:</strong> ${G.newly.join(', ')}</div>`:''}
+    <p style="margin-top:12px">${FLU_OPS[G.op].name}: ${st.m} of ${st.t} facts mastered.${stage()>oldStage?` ${pet().name} ${pet().grow[stage()-2]}!`:lvUp?` ${pet().name} reached level ${level()}!`:''}</p>
+    <div class="earn"><span class="stat">🪙 +${coins} coins</span><span class="stat">⭐ +${xp} points</span></div>
+    <div class="actions"><button class="btn big" id="fagain">Another sprint</button><button class="btn big ghost" id="fmap">Fact map</button></div></section>`;
+  const op=G.op,focus=G.focus;$('#fagain').onclick=()=>fluStart(op,focus);$('#fmap').onclick=()=>fluHome(op);
+}
+function fluSummaryHTML(){const ops=fluOps();return `<div class="gcard skills">${ops.map(o=>{const s=fluStats(o),pct=Math.round(100*s.m/s.t),best=(S.fluBest||{})[o];
+  return `<div class="skill"><div class="skill-top"><span>${FLU_OPS[o].sym} ${FLU_OPS[o].name}</span><span>${s.m} of ${s.t}${best?` · best ${best}/min`:''}</span></div><div class="xpbar"><span style="width:${pct}%"></span></div></div>`}).join('')}</div>`}
+
 /* ---------- Daily Challenge ---------- */
 function dailyProblem(){const band=WP_BAND(S.grade);return seeded(dkey()+'|'+band,()=>{const t=pick(GEN.filter(g=>g.band===band));return Object.assign({id:'daily:'+t.id,band,kind:'word'},t.make())})}
 function dailyStreak(){const D=S.daily,t=dkey(),y=dkey(new Date(Date.now()-864e5));return D.last===t||D.last===y?D.streak:0}
@@ -1448,7 +1825,7 @@ function shop(){
     const art=it.slot==='bg'?`<div class="pet shop-art bg-${id}">${petSVG('happy',stage(),S.pet,{...eq,bg:id})}</div>`:`<div class="shop-art">${petSVG('happy',stage(),S.pet,prev)}</div>`;
     return `<button class="shop-item${on?' on':''}" data-id="${id}">${art}<strong>${it.name}</strong><span class="price">${on?'Wearing ✓':owned?'Tap to wear':`🪙 ${it.price}`}</span></button>`};
   $('#app').innerHTML=`
-  <div class="playbar"><button class="iconbtn" id="sback" aria-label="Back to home">←</button><h1 class="gtitle">Pet shop</h1><span class="stat" style="margin-left:auto">🪙 ${S.coins}</span></div>
+  <div class="playbar"><button class="iconbtn" id="sback" aria-label="Back to home">←</button><h1 class="gtitle">Pet shop</h1><span class="stat" style="margin-left:auto"><span class="coin3d">🪙</span> ${S.coins}</span></div>
   <div class="pet shop-hero${bgClass()}" id="pet">${petSVG('happy')}</div>
   <p class="say" style="text-align:center">Tap an item to buy it. Tap something you own to wear it or take it off.</p>
   ${SLOTS.map(([slot,label])=>`<h2 class="section-title">${label}</h2><div class="shop-grid">${Object.entries(ACC).filter(([,it])=>it.slot===slot).map(([id,it])=>card(id,it)).join('')}</div>`).join('')}`;
@@ -1491,6 +1868,8 @@ function parents(tab){
       <div class="kpi"><strong>🔥 ${dailyStreak()}</strong><span>daily challenge streak</span></div>
       <div class="kpi"><strong>${level()}</strong><span>pet level</span></div>
     </div>
+    <h2 class="section-title">Math fact fluency</h2>
+    ${fluSummaryHTML()}
     <h2 class="section-title">Minutes practiced this week</h2>
     <div class="gcard"><div class="weekbars">${days.map((d,i)=>`<div class="wb"><span class="wbv">${mins[i]||''}</span><div class="wbbar" style="height:${Math.round(80*mins[i]/maxM)}px"></div><span class="wbl">${d.l}</span></div>`).join('')}</div></div>
     <h2 class="section-title">Skills</h2>
@@ -1620,6 +1999,19 @@ function submitTest(timeUp){
   <div class="actions" style="margin-top:16px"><button class="btn big" id="back">Home</button><button class="btn big ghost" id="again">New test</button></div>`;
   window.scrollTo(0,0);$('#back').onclick=home;$('#again').onclick=testIntro;
 }
+
+
+/* 3D floating background */
+(function(){const d=document.createElement('div');d.className='bg3d';d.setAttribute('aria-hidden','true');
+  const cols=['#FF7A85','#60A5FA','#5BD08A','#FFD84D','#A78BFA','#FF9F6E','#4FD1C5'];let h='';
+  for(let i=0;i<7;i++){const sz=rnd(40,110);h+=`<i style="--c:${cols[i]};width:${sz}px;height:${sz}px;left:${rnd(-5,90)}%;top:${rnd(-5,90)}%;--t:${rnd(7,14)}s;--dx:${rnd(-40,40)}px;--dy:${rnd(-60,60)}px"></i>`}
+  ['+','×','÷','=','−'].forEach((c,i)=>{h+=`<b style="--c:${cols[(i+2)%7]};left:${rnd(2,88)}%;top:${rnd(5,90)}%;--t:${rnd(9,16)}s">${c}</b>`});
+  d.innerHTML=h;document.body.prepend(d);
+  // Cards tilt toward the mouse (mouse only, so taps on phones stay simple)
+  const sel='.mode,.pet-card,.daily,.petpick,.shop-item';
+  document.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return;const el=e.target.closest(sel);document.querySelectorAll('.tilting').forEach(x=>{if(x!==el){x.classList.remove('tilting');x.style.removeProperty('--rx');x.style.removeProperty('--ry')}});
+    if(!el)return;const r=el.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;el.classList.add('tilting');el.style.setProperty('--ry',(px*10).toFixed(2)+'deg');el.style.setProperty('--rx',(-py*10).toFixed(2)+'deg')});
+})();
 
 home();
 </script>
