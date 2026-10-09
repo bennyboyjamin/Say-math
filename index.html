@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- Say Math. © 2026 Say Math. All rights reserved. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -1017,6 +1018,7 @@ body #app>.tabbar{animation:navin .35s ease backwards}
 /* app polish: no long-press callouts, no double-tap zoom on controls */
 body{-webkit-touch-callout:none}
 #app button,.modal-card button,.tabbar button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.copy{text-align:center;font-size:12px;color:var(--muted);margin:28px 0 6px}
 </style>
 </head>
 <body>
@@ -1967,6 +1969,7 @@ function home(){
     ${S.grade>=3?`<button class="mode" id="divBtn"><span class="ic c-pink">${ICON.div}</span><span><strong>Division Tricks</strong><small>Faster than long division</small></span></button>`:''}
     <button class="mode" id="testBtn"><span class="ic c-plum">${ICON.test}</span><span><strong>Practice Test</strong><small>Timed mock contest</small></span></button>
   </div>
+  <p class="copy">© 2026 Say Math. All rights reserved.</p>
   </div>
   ${navHTML('play')}`;
   wireNav('play');
@@ -3750,7 +3753,7 @@ function parents(tab){
     $('#bkLoad').onclick=()=>{try{const o=JSON.parse(decodeURIComponent(escape(atob($('#bkIn').value.trim()))));if(!o||typeof o!=='object'||!('xp' in o))throw 0;S=o;migrate();save();toast('Progress restored!');parents('progress')}catch(e){toast('That code didn’t work. Check that you pasted all of it.')}};
     let armed=false;$('#wipe').onclick=e=>{if(!armed){armed=true;e.target.textContent='Tap again to erase everything';return}try{localStorage.removeItem(KEY)}catch(_){}S=defaultS();migrate();save();toast('All progress erased for '+curProf().name);home()};
   }
-  addNav('parents');
+  $('#app').insertAdjacentHTML('beforeend','<p class="copy">© 2026 Say Math. All rights reserved.</p>');addNav('parents');
 }
 /* ---------- Practice Test ---------- */
 const TESTCFG=[{n:12,min:30},{n:16,min:40},{n:20,min:50},{n:25,min:40}];
