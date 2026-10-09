@@ -1,0 +1,151 @@
+# Say Math: builds the iPhone/iPad app on GitHub's Mac computers
+# and uploads it to App Store Connect (TestFlight). No Mac needed.
+#
+# Put this file in your repo at:  .github/workflows/ios-app.yml
+# Needs these repository secrets (Settings > Secrets and variables > Actions):
+#   APPLE_TEAM_ID   10-character Team ID from developer.apple.com > Membership
+#   BUNDLE_ID       the app's ID, for example com.yourname.saymath
+#   ASC_KEY_ID      App Store Connect API key ID
+#   ASC_ISSUER_ID   App Store Connect API issuer ID
+#   ASC_KEY_P8      full text of the AuthKey_XXXX.p8 file (including BEGIN/END lines)
+# Also needs app-icon.png (1024x1024) and app-splash.png (2732x2732) next to index.html.
+
+name: Build iPhone app
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version number shown on the App Store (for example 1.0)"
+        required: true
+        default: "1.0"
+
+jobs:
+  ios:
+    runs-on: macos-15
+    timeout-minutes: 60
+    env:
+      BUNDLE_ID: ${{ secrets.BUNDLE_ID }}
+      TEAM: ${{ secrets.APPLE_TEAM_ID }}
+      KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ISSUER: ${{ secrets.ASC_ISSUER_ID }}
+      P8: ${{ secrets.ASC_KEY_P8 }}
+      VER: ${{ inputs.version }}
+      BUILD: ${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check setup
+        run: |
+          missing=""
+          for v in BUNDLE_ID TEAM KEY_ID ISSUER P8; do [ -z "${!v}" ] && missing="$missing $v"; done
+          if [ -n "$missing" ]; then echo "::error::Missing secrets:$missing"; exit 1; fi
+          for f in index.html app-icon.png app-splash.png; do [ -f "$f" ] || { echo "::error::$f is missing from the repo"; exit 1; }; done
+          echo "Building Say Math $VER (build $BUILD) for $BUNDLE_ID"
+
+      - name: Pick the newest Xcode
+        run: |
+          XC=$(ls -d /Applications/Xcode_*.app | grep -v -i beta | sort -V | tail -1)
+          sudo xcode-select -s "$XC"
+          xcodebuild -version
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Create the native iOS project
+        run: |
+          mkdir -p app/www
+          cp index.html app/www/index.html
+          cd app
+          cat > package.json <<'EOF'
+          {"name":"say-math","version":"1.0.0","private":true,
+           "dependencies":{"@capacitor/core":"^7.0.0","@capacitor/ios":"^7.0.0"},
+           "devDependencies":{"@capacitor/cli":"^7.0.0"}}
+          EOF
+          cat > capacitor.config.json <<EOF
+          {"appId":"$BUNDLE_ID","appName":"Say Math","webDir":"www",
+           "ios":{"contentInset":"never","backgroundColor":"#F7EFDF","scrollEnabled":true}}
+          EOF
+          npm install --no-audit --no-fund
+          npx cap add ios
+          npx cap sync ios
+
+      - name: Add icon, launch screen and app settings
+        run: |
+          A=app/ios/App/App/Assets.xcassets
+          rm -rf "$A/AppIcon.appiconset"; mkdir -p "$A/AppIcon.appiconset"
+          cp app-icon.png "$A/AppIcon.appiconset/icon-1024.png"
+          cat > "$A/AppIcon.appiconset/Contents.json" <<'EOF'
+          {"images":[{"filename":"icon-1024.png","idiom":"universal","platform":"ios","size":"1024x1024"}],"info":{"author":"xcode","version":1}}
+          EOF
+          for f in "$A"/Splash.imageset/*.png; do cp app-splash.png "$f"; done
+          P=app/ios/App/App/Info.plist
+          /usr/libexec/PlistBuddy -c "Delete :ITSAppUsesNonExemptEncryption" "$P" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" "$P"
+          cat > /tmp/settings.rb <<'EOF'
+          require 'xcodeproj'
+          p = Xcodeproj::Project.open('app/ios/App/App.xcodeproj')
+          p.targets.select { |t| t.name == 'App' }.each do |t|
+            t.build_configurations.each do |c|
+              s = c.build_settings
+              s['DEVELOPMENT_TEAM'] = ENV['TEAM']
+              s['CODE_SIGN_STYLE'] = 'Automatic'
+              s['PRODUCT_BUNDLE_IDENTIFIER'] = ENV['BUNDLE_ID']
+              s['MARKETING_VERSION'] = ENV['VER']
+              s['CURRENT_PROJECT_VERSION'] = ENV['BUILD']
+              s['TARGETED_DEVICE_FAMILY'] = '1,2'
+              s['ASSETCATALOG_COMPILER_APPICON_NAME'] = 'AppIcon'
+            end
+          end
+          p.save
+          EOF
+          ruby -e "require 'xcodeproj'" 2>/dev/null || sudo gem install xcodeproj --no-document
+          ruby /tmp/settings.rb
+
+      - name: App Store Connect key
+        run: |
+          mkdir -p ~/private_keys
+          printf '%s\n' "$P8" > ~/private_keys/AuthKey_$KEY_ID.p8
+
+      - name: Build the app
+        run: |
+          cd app/ios/App
+          if [ -d App.xcworkspace ]; then SRC="-workspace App.xcworkspace"; else SRC="-project App.xcodeproj"; fi
+          xcodebuild $SRC -scheme App -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/SayMath.xcarchive" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath ~/private_keys/AuthKey_$KEY_ID.p8 \
+            -authenticationKeyID "$KEY_ID" \
+            -authenticationKeyIssuerID "$ISSUER" \
+            archive | tail -n 200
+          test -d "$RUNNER_TEMP/SayMath.xcarchive" || { echo "::error::Build failed. Scroll up for the first error."; exit 1; }
+
+      - name: Upload to App Store Connect
+        run: |
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>$TEAM</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+            <key>uploadSymbols</key><true/>
+          </dict></plist>
+          EOF
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/SayMath.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -exportPath "$RUNNER_TEMP/export" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath ~/private_keys/AuthKey_$KEY_ID.p8 \
+            -authenticationKeyID "$KEY_ID" \
+            -authenticationKeyIssuerID "$ISSUER"
+          echo "Uploaded Say Math $VER (build $BUILD). It appears in App Store Connect > TestFlight in about 15-30 minutes."
+
+      - name: Clean up key
+        if: always()
+        run: rm -rf ~/private_keys
