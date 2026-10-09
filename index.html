@@ -1040,6 +1040,22 @@ body{-webkit-touch-callout:none}
   #app .wbub{font-size:12px;padding:3px 8px}
   #app #lpad .keypad button{height:46px;font-size:24px}
 }
+
+/* ===== Level screen fits one screen: keys fixed, question + hint share the middle ===== */
+#app:has(> #lpad){height:100vh;height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;padding-bottom:0;overflow:hidden}
+#app:has(> #lpad) > .playbar{flex:none}
+#app:has(> #lpad) > .scene{flex:none;transition:height .3s ease,margin .3s ease,opacity .3s}
+#app:has(> #lpad) > .lvl-mid{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:0 2px 8px;margin:0 -2px}
+#app:has(> #lpad) > #lpad,#app:has(> #lpad) > #lpad:has(.keypad,.cmp,.adv-ch){flex:none;position:static;margin:0;padding:8px 0 calc(8px + env(safe-area-inset-bottom,0px));background:none}
+#app:has(> #lpad) #ltutor .tutor{margin-top:10px}
+/* when a hint is open, the scene steps aside so everything fits */
+#app:has(> #lpad):has(#ltutor .tutor) > .scene{height:0;margin-top:0;border-width:0;opacity:0;box-shadow:none}
+#app:has(> #lpad):has(#ltutor .tutor) #lvis{zoom:.8}
+@media (max-width:600px){
+  #app:has(> #lpad) #ltutor .tutor{padding:12px 12px;font-size:15px}
+  #app:has(> #lpad) #ltutor .tutor h2{font-size:18px}
+  #app:has(> #lpad) #ltutor .tutor .face{width:44px}
+}
 </style>
 </head>
 <body>
@@ -3483,9 +3499,9 @@ function lvlStart(world,n,resume){
       `<div class="flag" style="left:${cpX(N-1)+250}px"><svg viewBox="0 0 60 90"><rect x="6" y="4" width="5" height="86" fill="#6B4A2B"/><path d="M11 6 L56 18 L11 32Z" fill="#EF5B52"/></svg></div>`}
     <div class="walker" id="walker" style="left:${boss?'6%':(C0?cpX(C0)-250:40)+'px'}"><div class="wbub" id="wbub" hidden></div><div class="hopper" id="hopper">${petSVG('happy')}</div></div>
   </div></div>
-  <div class="problem lvl-card" id="lcard"><div class="lvl-q" id="lq"></div><div id="lvis"></div><div id="lexpr" class="lexpr"></div>
+  <div class="lvl-mid" id="lmid"><div class="problem lvl-card" id="lcard"><div class="lvl-q" id="lq"></div><div id="lvis"></div><div id="lexpr" class="lexpr"></div>
     <div class="wp-tools"><button class="btn ghost" id="lhint"><span class="bi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a7 7 0 0 0-4 12.7V18h8v-2.8a7 7 0 0 0-4-12.7z" fill="#F6B92B" stroke="#23233F" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 21h6" stroke="#23233F" stroke-width="2" stroke-linecap="round"/><path d="M10 8.5q2-1.5 4 0" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></span>Hint</button><button class="btn ghost" id="lsay" aria-label="Read the problem aloud"><span class="bi" style="margin:0"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="#4A90D9" stroke="#23233F" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 9q2 3 0 6M18.5 6.5q4 5.5 0 11" stroke="#23233F" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span></button></div></div>
-  <div id="ltutor"></div><div id="lpad"></div>`;
+  <div id="ltutor"></div></div><div id="lpad"></div>`;
   $('#lquit').onclick=()=>advMap(world);
   $('#lhint').onclick=()=>{if(G.busy)return;lvlTutor(Math.min(3,G.hl+1),null)};
   $('#lsay').onclick=()=>speak(sayFix(lvlSpeech()));
@@ -3504,6 +3520,7 @@ function lvlAsk(){
   const P=G.p=G.L.gen(Math.max(G.wd.minGrade,eg()));G.typed='';G.tries=0;G.hl=0;G.revealed=false;
   $('#lq').innerHTML=(G.practice?'<span class="pill">Try one like it!</span> ':'')+P.q;$('#lvis').innerHTML=P.vis||'';$('#ltutor').innerHTML='';
   lvlExpr();lvlPad();if(G.n<=2&&eg()<=1&&S.settings.readAloud)speak(sayFix(lvlSpeech()));
+  if($('#lmid'))$('#lmid').scrollTop=0;
   const c=$('#lcard');c.classList.remove('flip-in');void c.offsetWidth;c.classList.add('flip-in');
 }
 function lvlSpeech(){const P=G.p;if(P.say)return P.q+' '+P.say;if(P.expr==='choice')return P.q+' … '+P.ch.map((c,i)=>`${'ABCDE'[i]}: ${c}.`).join(' ');return P.q+' '+(P.expr==='compare'?`${P.L} … ${P.R}`:P.show?P.show.replace('□','what'):'')}
@@ -3586,7 +3603,7 @@ function lvlTutor(level,diag){
   if(level===2&&T.demo){const st=T.demo.op==='+'?addDemo(T.demo.a,T.demo.b):subDemo(T.demo.a,T.demo.b);let k=-1;
     const draw=()=>{$('#dcol').innerHTML=colHTML(T.demo.a,T.demo.b,T.demo.op,k<0?{}:st[k]);if(k>=0)$('#dtxt').textContent=st[k].text;if(k>=st.length-1){$('#dnext').disabled=true;$('#dnext').textContent='✓ Done. Your turn!'}};
     draw();$('#dnext').onclick=()=>{k++;sfx('tap');draw()}}
-  if(level>1)$('#ltutor').scrollIntoView({behavior:'smooth',block:'nearest'});
+  {const m=$('#lmid');if(m)setTimeout(()=>{const t=$('#ltutor');if(t&&$('#lmid')===m)m.scrollTo({top:Math.max(0,t.offsetTop-m.offsetTop-(level>1?0:m.clientHeight*.35)),behavior:'smooth'})},280)}
 }
 function lvlFinish(){
   S.advRun=null;const w=G.world,n=G.n,W=G.wd,LV=W.levels,D=advData(w),old=D.stars[n]||0,N=G.N,c=G.clean;cleanup();
