@@ -116,6 +116,43 @@ jobs:
           fi
           echo "Apple key looks good (${#BODY} characters)."
 
+      - name: Check Apple login
+        run: |
+          cat > /tmp/check.rb <<'EOF'
+          require 'openssl'; require 'json'; require 'base64'; require 'net/http'; require 'uri'
+          kid=ENV['KEY_ID'].to_s.strip; iss=ENV['ISSUER'].to_s.strip; bid=ENV['BUNDLE_ID'].to_s.strip
+          key=OpenSSL::PKey.read(File.read(ENV['KEYFILE']))
+          b64=->(s){ Base64.urlsafe_encode64(s, padding: false) }
+          now=Time.now.to_i
+          data=b64.({alg:'ES256',kid:kid,typ:'JWT'}.to_json)+'.'+b64.({iss:iss,iat:now,exp:now+600,aud:'appstoreconnect-v1'}.to_json)
+          der=key.sign(OpenSSL::Digest::SHA256.new, data)
+          seq=OpenSSL::ASN1.decode(der)
+          sig=seq.value.map{|i| i.value.to_s(2).rjust(32,"\0")}.join
+          jwt=data+'.'+b64.(sig)
+          problems=[]
+          problems << "ASC_KEY_ID should be 10 letters and numbers (it has #{kid.length} characters)." unless kid =~ /\A[A-Z0-9]{10}\z/
+          problems << "ASC_ISSUER_ID should look like 12345678-abcd-1234-abcd-123456789012 (it has #{iss.length} characters)." unless iss =~ /\A\h{8}-\h{4}-\h{4}-\h{4}-\h{12}\z/
+          problems << "BUNDLE_ID has spaces or unusual characters." unless bid =~ /\A[A-Za-z0-9.\-]+\z/
+          problems.each{|p| puts "::error::#{p}"}
+          uri=URI("https://api.appstoreconnect.apple.com/v1/bundleIds?filter[identifier]=#{bid}&limit=5")
+          req=Net::HTTP::Get.new(uri); req['Authorization']="Bearer #{jwt}"
+          res=Net::HTTP.start(uri.host,uri.port,use_ssl:true){|h| h.request(req)}
+          case res.code
+          when '200'
+            ids=JSON.parse(res.body)['data'].map{|d| d['attributes']['identifier']}
+            if ids.include?(bid) then puts "Apple login works, and the App ID #{bid} is registered."
+            else puts "::error::Apple login works, but the App ID in BUNDLE_ID is not registered at developer.apple.com > Identifiers (or BUNDLE_ID has a typo)."; exit 1 end
+          when '401'
+            puts "::error::Apple rejected the login (401). ASC_KEY_ID and ASC_ISSUER_ID must come from the same Team Keys page as the AuthKey file. Check that ASC_KEY_ID matches the file name AuthKey_XXXXXXXXXX.p8, and copy the Issuer ID again."; exit 1
+          when '403'
+            puts "::error::Apple login works, but this key is not allowed to do this (403). Make a Team Key with Admin access and update ASC_KEY_ID and ASC_KEY_P8."; exit 1
+          else
+            puts "::error::Unexpected answer from Apple (#{res.code}): #{res.body[0,300]}"; exit 1
+          end
+          exit 1 unless problems.empty?
+          EOF
+          KEYFILE=~/private_keys/AuthKey_$KEY_ID.p8 ruby /tmp/check.rb
+
       - name: Build the app
         run: |
           cd app/ios/App
