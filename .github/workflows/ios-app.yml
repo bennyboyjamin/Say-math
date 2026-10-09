@@ -33,7 +33,7 @@ jobs:
       VER: ${{ inputs.version }}
       BUILD: ${{ github.run_number }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Check setup
         run: |
@@ -49,7 +49,7 @@ jobs:
           sudo xcode-select -s "$XC"
           xcodebuild -version
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 20
 
@@ -106,7 +106,15 @@ jobs:
       - name: App Store Connect key
         run: |
           mkdir -p ~/private_keys
-          printf '%s\n' "$P8" > ~/private_keys/AuthKey_$KEY_ID.p8
+          F=~/private_keys/AuthKey_$KEY_ID.p8
+          # Rebuild the key file, whatever way it was pasted (missing lines, extra spaces, Windows line endings)
+          BODY=$(printf '%s' "$P8" | tr -d '\r' | sed -e 's/-----BEGIN [A-Z ]*-----//g' -e 's/-----END [A-Z ]*-----//g' | tr -d ' \n\t')
+          { echo "-----BEGIN PRIVATE KEY-----"; printf '%s\n' "$BODY" | fold -w 64; echo "-----END PRIVATE KEY-----"; } > "$F"
+          if ! openssl pkey -in "$F" -noout 2>/dev/null && ! openssl ec -in "$F" -noout 2>/dev/null; then
+            echo "::error::The ASC_KEY_P8 secret is not a valid Apple key. Open the AuthKey_${KEY_ID}.p8 file, copy ALL of its text and save it again as the ASC_KEY_P8 secret."
+            exit 1
+          fi
+          echo "Apple key looks good (${#BODY} characters)."
 
       - name: Build the app
         run: |
@@ -119,7 +127,9 @@ jobs:
             -authenticationKeyPath ~/private_keys/AuthKey_$KEY_ID.p8 \
             -authenticationKeyID "$KEY_ID" \
             -authenticationKeyIssuerID "$ISSUER" \
-            archive | tail -n 200
+            archive > "$RUNNER_TEMP/build.log" 2>&1 || true
+          tail -n 200 "$RUNNER_TEMP/build.log"
+          grep -E "error:|\*\* ARCHIVE FAILED" "$RUNNER_TEMP/build.log" | sort -u | head -n 8 | while IFS= read -r l; do echo "::error::$l"; done
           test -d "$RUNNER_TEMP/SayMath.xcarchive" || { echo "::error::Build failed. Scroll up for the first error."; exit 1; }
 
       - name: Upload to App Store Connect
