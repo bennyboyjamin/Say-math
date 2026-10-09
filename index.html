@@ -1019,6 +1019,27 @@ body #app>.tabbar{animation:navin .35s ease backwards}
 body{-webkit-touch-callout:none}
 #app button,.modal-card button,.tabbar button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
 .copy{text-align:center;font-size:12px;color:var(--muted);margin:28px 0 6px}
+
+/* ===== Level screen: keep the answer keys on screen ===== */
+#lpad:has(.keypad,.cmp,.adv-ch){position:sticky;bottom:0;z-index:30;margin:0 -16px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:linear-gradient(color-mix(in srgb,var(--bg) 0%,transparent),var(--bg) 14px)}
+#lpad:has(.keypad,.cmp,.adv-ch) .keypad:first-child,#lpad .cmp,#lpad .adv-ch{margin-top:4px}
+#app #lpad .adv-ch{gap:6px}#app #lpad .adv-ch .choice{min-height:46px;padding-top:7px;padding-bottom:7px}
+#ltutor{scroll-margin-bottom:300px}
+@media (max-width:600px){
+  #app .scene{height:168px;margin-top:8px}
+  #app .bossscene .guardian{width:min(34%,128px);bottom:28px}
+  #app .lvl-card{margin-top:10px;padding:12px 10px;gap:6px}
+  body #app .lvl-q{font-size:18px;line-height:1.25}
+  #app #lpad .keypad{gap:7px;margin-top:8px}
+  #app #lpad .keypad button{height:52px;font-size:27px}
+  #app #lpad .xk button{height:44px}
+}
+@media (max-width:600px) and (max-height:760px){
+  #app .scene{height:136px}
+  #app .walker{width:66px}
+  #app .wbub{font-size:12px;padding:3px 8px}
+  #app #lpad .keypad button{height:46px;font-size:24px}
+}
 </style>
 </head>
 <body>
@@ -1891,14 +1912,14 @@ function navHTML(active){
   return `<nav class="tabbar" aria-label="Main">${T.map(([k,id,l,ic])=>`<button class="tb${k===active?' on':''}" id="${id}"${k===active?' aria-current="page"':''}><span class="tbi">${ICON[ic]}</span><span class="tbl">${l}</span></button>`).join('')}</nav>`;
 }
 function wireNav(active){
-  const go={play:()=>{if(active==='play'){sfx('tap');const aw=S.advLast&&WD[S.advLast]&&worldOK(S.advLast)?S.advLast:'forest';advMap(aw,advNext(aw))}else home()},shop:()=>{if(active!=='shop')shop()},guide:()=>{if(active!=='guide')guide()},parents:()=>{if(active!=='parents')parentGate()}};
+  const go={play:()=>{if(active==='play'){sfx('tap');const aw=advWorld();advMap(aw,advNext(aw))}else home()},shop:()=>{if(active!=='shop')shop()},guide:()=>{if(active!=='guide')guide()},parents:()=>{if(active!=='parents')parentGate()}};
   [['play','playTab'],['shop','shopBtn'],['guide','guideBtn'],['parents','parentBtn']].forEach(([k,id])=>{const b=$('#'+id);if(b)b.onclick=go[k]});
 }
 function addNav(active){const a=$('#app');if(!a||a.querySelector('.tabbar'))return;a.insertAdjacentHTML('beforeend',navHTML(active));wireNav(active)}
 
 function home(){
   G&&cleanup();G=null;clearTimeout(home.idleT);
-  const h=hearts(),lv=level(),st=stage(),aw=S.advLast&&WD[S.advLast]&&worldOK(S.advLast)?S.advLast:'forest',AW=WD[aw],nx=advNext(aw),L=AW.levels[nx-1],allDone=advStars(aw)>=30;
+  const h=hearts(),lv=level(),st=stage(),aw=advWorld(),AW=WD[aw],nx=advNext(aw),L=AW.levels[nx-1],allDone=advStars(aw)>=30;
   const hr=new Date().getHours(),night=hr>=21||hr<6;
   const baseMood=h<=1?'sad':night?'sleepy':'happy';
   const gname=S.grade?`Grade ${S.grade}`:'Kindergarten';
@@ -1939,12 +1960,6 @@ function home(){
     </div>
   </section>
   <div class="home-side">
-  <button class="adv-hero" id="advBtn" aria-label="${started?'Continue':'Start'} Adventure: ${AW.name}, level ${nx}">
-    <span class="adv-art">${worldArt(aw)}<span class="adv-tag">${AW.icon?'':''}Level ${nx} of ${AW.levels.length}</span>${run?`<span class="adv-tag save">✓ Checkpoint ${run.cp} saved</span>`:''}</span>
-    <span class="adv-row"><span class="adv-txt"><strong>${run?'Continue Level':started?'Continue Adventure':'Start Adventure'}</strong><small>${AW.name} · ${allDone?'All 30 stars!':L.name}</small>
-      <span class="adv-prog"><span class="bar"><span style="width:${Math.round(100*advStars(aw)/30)}%"></span></span><b>${STAR_SVG}${advStars(aw)}/30</b></span></span>
-      <span class="adv-go" aria-hidden="true">${ICON.play}</span></span>
-  </button>
   <button class="daily2${done?' done':''}" id="dailyBtn" ${done?'disabled':''} aria-label="Daily Challenge. ${done?'Done for today':'Today: '+dStrat}. Streak ${streak} days">
     <span class="d-ic">${done?ICON.done:ICON.cal}</span>
     <span class="d-txt"><strong>Daily Challenge</strong><small>${done?'Done! New puzzle tomorrow':'Today: '+dStrat}</small>
@@ -1993,7 +2008,6 @@ function home(){
   $('#petChg').onclick=petPicker;$('#gradeBtn').onclick=gradePicker;$('#profBtn').onclick=profilePicker;
   document.querySelectorAll('.mode[data-mode]').forEach(m=>m.onclick=()=>start(m.dataset.mode));
   document.querySelectorAll('.wcard').forEach(w=>w.onclick=()=>{const W=WORLDS.find(x=>x.id===w.dataset.w);if(worldOK(W.id)){sfx('tap');advMap(W.id)}else{replayAnim(w,'shake');toast(`${W.name} opens in ${W.grades.toLowerCase()}. Change your grade at the top to play.`)}});
-  $('#advBtn').onclick=()=>{sfx('tap');advMap(aw,advNext(aw))};
   $('#testBtn').onclick=testIntro;if($('#divBtn'))$('#divBtn').onclick=divHome;$('#fluBtn').onclick=()=>fluHome(S.fluOp);$('#bossBtn').onclick=bossHome;
   $('#dailyBtn').onclick=()=>start('daily');
 }
@@ -3348,11 +3362,10 @@ const SPHINX={id:'sphinx',name:'The Puzzle Sphinx',kind:'',color:'#E0B07A',dark:
 /* =====================================================================
    ADVENTURE: worlds, map, level gameplay, rewards (screen + game logic)
    ===================================================================== */
+const advWorld=()=>{const ok=w=>WORLDS.some(x=>x.id===w)&&worldOK(w);return S.advLast&&ok(S.advLast)?S.advLast:(WORLDS.find(x=>worldOK(x.id))||WORLDS[WORLDS.length-1]).id};
 const WORLDS=[
-  {id:'forest',name:'Number Forest',icon:'🌲',grades:'Grades K–8',topics:'Counting, adding, subtracting, place value',open:true},
   {id:'castle',name:'Multiplication Castle',icon:'🏰',grades:'Grade 2+',topics:'Multiplication, division, fact fluency',open:true,minGrade:2},
   {id:'island',name:'Fraction Island',icon:'🏝️',grades:'Grade 3+',topics:'Fractions, decimals, percents',open:true},
-  {id:'galaxy',name:'Geometry Galaxy',icon:'🪐',grades:'Grade 2+',topics:'Shapes, area, perimeter, measurement',open:true},
   {id:'kingdom',name:'Algebra Kingdom',icon:'👑',grades:'Grade 5+',topics:'Patterns, variables, equations',open:true},
   {id:'logic',name:'Logic Universe',icon:'🌌',grades:'All grades',topics:'Puzzles and competition problems',open:true}
 ];
