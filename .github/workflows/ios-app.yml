@@ -215,10 +215,9 @@ jobs:
             -authenticationKeyIssuerID "$ISSUER"
           echo "Uploaded Say Math $VER (build $BUILD). It appears in App Store Connect > TestFlight in about 15-30 minutes."
 
-      - name: Remove temporary signing files
+      - name: Remove signing files from this computer
         if: always()
         run: |
-          if [ -f ~/private_keys/AuthKey_$KEY_ID.p8 ] && [ -n "$SIGN_DIR" ]; then KEYFILE=~/private_keys/AuthKey_$KEY_ID.p8 ruby .github/scripts/asc.rb cleanup || true; fi
           [ -n "$SIGN_DIR" ] && security delete-keychain "$SIGN_DIR/build.keychain-db" 2>/dev/null || true
 
       - name: Clean up key

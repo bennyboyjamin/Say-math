@@ -2,7 +2,7 @@
 # App Store Connect API, so no Mac or registered device is needed.
 #   ruby asc.rb setup    -> distribution certificate + App Store profile
 #   ruby asc.rb cleanup  -> revokes the certificate and deletes the profile
-require 'openssl'; require 'json'; require 'base64'; require 'net/http'; require 'uri'; require 'fileutils'
+require 'openssl'; require 'json'; require 'base64'; require 'net/http'; require 'uri'; require 'fileutils'; require 'time'
 
 KID = ENV.fetch('KEY_ID').strip
 ISS = ENV.fetch('ISSUER').strip
@@ -51,7 +51,29 @@ when 'setup'
   bundle = j['data'].find { |d| d['attributes']['identifier'] == BID }
   fail!("The App ID #{BID} is not registered at developer.apple.com > Identifiers.") unless bundle
 
-  # 2. a fresh Apple Distribution certificate from a new private key
+  # 2. tidy up certificates and profiles left by builds more than a day old.
+  #    (Never remove them at the end of a build: Apple checks the signature
+  #    while processing the upload, and a revoked certificate fails that check.)
+  day_ago = Time.now - 86_400
+  code, j = api(:get, '/v1/certificates?filter[certificateType]=DISTRIBUTION&limit=50')
+  if code == 200
+    old = j['data'].select { |c| (Time.parse(c['attributes']['expirationDate']) - 365 * 86_400) < day_ago }
+    if j['data'].size >= 2
+      old.each do |c|
+        rc, = api(:delete, "/v1/certificates/#{c['id']}")
+        puts "Revoked an old build certificate from #{(Time.parse(c['attributes']['expirationDate']) - 365 * 86_400).strftime('%b %-d')} (#{rc})."
+      end
+    end
+  end
+  code, j = api(:get, '/v1/profiles?filter[profileType]=IOS_APP_STORE&limit=200')
+  if code == 200
+    j['data'].each do |pr|
+      next unless pr['attributes']['name'].to_s.start_with?('Say Math CI ') && pr['attributes']['name'] != PROFILE_NAME
+      api(:delete, "/v1/profiles/#{pr['id']}")
+    end
+  end
+
+  # 3. a fresh Apple Distribution certificate from a new private key
   key = OpenSSL::PKey::RSA.new(2048)
   File.write("#{WORK}/dist.key", key.to_pem)
   csr = OpenSSL::X509::Request.new
@@ -63,13 +85,13 @@ when 'setup'
                 { data: { type: 'certificates', attributes: { certificateType: 'DISTRIBUTION', csrContent: csr.to_pem } } })
   unless code == 201
     fail!("Apple could not make a distribution certificate (#{code}). #{apple_error(j)} " \
-          "If it says you have too many, revoke old Apple Distribution certificates at developer.apple.com > Certificates.")
+          "If it says you have too many certificates, wait a day before building again, or revoke old Apple Distribution certificates at developer.apple.com > Certificates.")
   end
   cert_id = j['data']['id']
   File.write("#{WORK}/cert_id", cert_id)
   File.binwrite("#{WORK}/dist.cer", Base64.decode64(j['data']['attributes']['certificateContent']))
 
-  # 3. an App Store provisioning profile for this app + certificate
+  # 4. an App Store provisioning profile for this app + certificate
   code, j = api(:post, '/v1/profiles', {
     data: { type: 'profiles', attributes: { name: PROFILE_NAME, profileType: 'IOS_APP_STORE' },
             relationships: { bundleId: { data: { type: 'bundleIds', id: bundle['id'] } },
